@@ -1,0 +1,14 @@
+Design Pattern:-
+*Singleton:- Single object created in intire project. (creational pattern). 
+	1. constructor private, 
+	2. method static.
+*Factory Design Pattern:- most use pattern, It provide best way to create new object. object created without exposing creation logic and reffer to new object using common interface. (creational pattern).
+	1. create common interface (os)
+	2. impliment in concrete class (android,windows,ios)
+	3. factory class who provide object for concrete class.
+*Proxy Design Pattern:- It let us use substitute object at place of original object.use for follwing things:-
+	1. Access Controll (which object can call original object)
+	2. Logging (which object have use original object)
+	3. Caching (store data to proxy object)
+	4. Lazy initialization (object not created until require)
+*Flyweight:- this pattern allows to fit more objectin RAM by sharing common parts of state between multiple object.

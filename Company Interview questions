@@ -1,0 +1,582 @@
+Describe project architecture. 
+How you implement security in spring boot. 
+What all security you have implemented in springboot application. -- authentication, authorization, and protection against common exploits
+How have you done exception handling. -- ExceptionHandler and custom exception
+How your micro services communicate.
+How transaction is handled in spring boot.: @EnableTransactionManagement in main class and add @Transactional in service method.
+What authentication method have you used for your application.
+Features of Java8
+
+----Synechron 1st -- given 
+different type of class loader
+call run method of runnable interface with functional programming
+jvm jdk jre.
+composite forain key
+function vs stored procedures
+notify vs wait
+@Restcontroller is in mvc
+collection vs collections
+call functional interface with lembda exp
+how StringBuffer is thread safe.
+rabitmq exchange(), messge read lost?
+
+-----2nd-- given
+changes in hashmap after java 8
+new funtional interfaces in java 8
+functional interface methods available for predicate, function, consumer, suppiler.
+method referencing
+spring containers: bean factory, application context
+@Primary and @Qualifier
+ORM tool: JPA
+lazy loading
+idempotence http methods: GET, PUT, DELETE, HEAD, OPTIONS and TRACE
+403 Error code
+Bad request: 400
+JWT payload
+ jquery to change div backgroud
+
+---neosoft:---given
+merge vs rebase
+primary vs unique
+2nd highest salary 
+immutable object value change
+call Interface default methods
+project
+
+-
+------------------coditas--given
+linkedlist vs hashset
+why insertion order not preserved in hashset.: Hashset uses hashtable and while inserting in hashtable hashcode will be calculated so object will be stored according to hashcode value.
+best ds when serching is imp with time complexity.: HashMap: Average Time Complexity: O(1), Worst Time Complexity: O(n)
+stringbuffer vs stringbuilder
+create immutable class
+create singleton class
+breaking pattern of singleton class
+can static method be synchronized? : yes
+program to remove duplicate and return value and index
+ways to creating thread. best way. when to extend thread class
+print 1 to 100 without loop. :recursive method call
+JPA
+creitaria vs specification in jpa.: 
+why use batch: Improved Performance, Reduced Resource Consumption, Concurrency Control, Transactional Integrity
+how to return json and xml response with same api.
+
+1. print duplicate
+2. duplicate from 2nd
+3. duplicate among both
+
+
+arr[]= {4,3,5,6,1,2}
+arr[]= {7,1,2,3,4,5,6,8,3,2}
+temp[] =null;
+
+for(int i = 0; i<arr.length; i++){
+	
+}
+----------------------------Pratiti
+
+--------Inteliatech--given
+how to manage async application
+@Transactional property
+RabbitMq
+Kafka
+how to manage request asynchronasly, place order on amazon it will give orderid but order not completed immidiatly
+program to find smallest and largest sum.
+solid principle
+Acid property.
+
+--------volkswagen-- given
+best way to impliment hashcode and equals method.
+@RequestMapping
+distributed transaction in microservices
+what do you mean by mocking class
+thenReturn vs doReturn
+@qualifer vs @Primary
+program to find nearest element of given no. in array
+SQL to find 5th highest salary without Max or Top
+
+---FIS -- given
+1. find second most frequent char in string. with case where 2 max frequent char available
+2. create singlton class
+3. design pattern
+4. thread
+5. how to create rest api endpoint to fetch emp
+6. OneToMany mapping
+7. Hashmap implimentation
+8. best list when update in middle
+9. what happen if return random no. in hashcode implimenattion for multiple same object in hasmap
+10. throw vs throws
+11. what happen if method1 calls method2 and method2 call method3 and exception occores in method3 but no catch available in 3 but available in 2.
+12. flow of request in springboot
+13. path var vs request param apart from url change
+14. what is Spring security
+15. senerio based question for parent class above and child below. will code excute.
+16. How request flow in springboot and how it know which controller class method should be call? dispatcher servlet
+17. how class loader work
+
+---LTI Mindtree L1
+1.Microservice design patterns..
+2.explain circuit breaker and states.
+3.Explain JWT token
+4.What is Authentication and Authorization
+5.What is Rest
+6.what is url and what is uri and resource
+7.API versioning. for 100 users other version of API will be called for others other version
+8.what HTTP status codes I know, Why we use 300 status codes. 300: multiple choice
+9.How to handle Exception in Springboot
+10.@RestController vs @Controller
+11.max salary by each department using stream
+12.base class of java. methods available in object class
+13.why wait(), notify(), notifyAll() available in object not in thread
+14.Method Overridding rules.
+ --- LTI Mindtree L1
+ 1. lazy stream
+ 2. create custom predicate
+ 3. dependency injection
+ 4. dependency inversion
+ 5. Solid principle
+ 6. profiles in springboot
+ 7. Actuator
+ 8. Association
+ 9. CI/CD
+ 10. Cloud
+ 11. write a method  Calculate(5,x->x<9); : using predicate: public static int calculate(int value, Predicate<Integer> predicate) {if (predicate.test(value)) {return value * 2; } else {return value / 2; }}
+ 12. reduce in stream.
+
+----ntt
+1. final class, method, var
+2. where to use lemda function
+3. scenierio based tell the output: public class JavaArrayExample{    public static void main(String[] args){  int[] array = new int[-5]; }}
+4. remove the duplicates from list: List<String> listOfStrings = Arrays.asList("Java", "Python", "C#", "Java", "Kotlin", "Python");
+5. find frequency of char in string: String inputString = "Java Concept Of The Day";
+6. print the numbers which are multiples of 5?:  List<Integer> listOfIntegers = Arrays.asList(45, 12, 56, 15, 24, 75, 31, 89);
+7. sql to delete duplicate from table.
+8. map vs flatmap
+9. Spring IOC container
+10. @Qulifier
+11. @component
+12. error codes: 500,400 401,402,200,
+13. how many collection we have
+14. Internal implimentation of arraylist
+15. how you write test case
+16. can we make contructor as final?
+17. Impliment Runnable interface using lembda.
+18. merge 2 array and sort it using stream. int[] a = new int[] {4, 2, 7, 1};   int[] b = new int[] {8, 3, 9, 5}; 
+
+---ntt client round
+1. Security classes and interfaces.
+2. find max lenth string using stream from list.
+3. write best and worst case code to serce no. in array.
+4. create 3 thread only. what is they way to finish all thread at same time.
+5. tell the output: class A { method1(){sysout("A");}} class B extends A{ method1() throws IOException{sysout("A"); } : throw exception
+6. differece between premitive array and arrayList.
+7. jpa query to find 3rd highest pension.
+8. inhancement for memory manegment after java 8
+
+---capgemini
+1. Jar vs War vs er
+2. java 8 feathers
+3. How to handle eceptions
+4. how to check 500 error code
+5. program with functional interface to accept 2 param and return multiplication.
+6. how to deploy jar/war
+7. how you test API end points.
+
+---capgemini 2nd
+1. What you have worked in microservices.
+2. How you do fault tolerence.
+3. How you communicated in microservices
+4. how to exclude auto configrution in springboot.
+5. what are functional interface. pre defined functional interfaces and methods.
+6. program to put space after every 3rd index in string. using stream
+7. find 3rd highest from list stream. 
+
+
+---Citius Tech
+1. Which oops concept used in project.
+2. why abstraction required.
+3. why we need default method in interface.
+4. why we create interface and then write logic in service impl?
+5. output: String s="abc"; s.concat("qwe"); sysout(s);
+6. can we create immutable class?
+7. create unmodifiable list.
+8. try with resource 
+9. program to reverse a string.
+10. Stringbuffer vs Stringbuilder
+11. Internal working of hashset. 
+12. what is hastable? as i told hashset uses as ds.
+13. Arraylist vs linkedlist
+14. Changes in Hashmap after java 8.
+15. why they change bucket to tree after java 8 in hashmap.
+16. Java 8 features.
+17. meta space in java.
+18. stream to double the salary of it department emp and collect all emp in list after updatation. :no filter requered as we will get only it departement emp. use map and inside that lemda make salary *2 and return the emp then collect in list.
+19. what is singlaton. how to break it
+20. what marker interface do apart from informing jvm. what type of information provided to jvm.
+21. Diffrence between @Component and @Bean. both work same so why there are diffent.
+22. What is IOC Container.
+23. why we use dependecy injection.
+24. @RestController vs @Controller
+25. Annotation in spring boot.
+26. what is @SpringBootAppliaction
+27. How dispatcher servlet auto configured in springboot.
+28. Microservices what i have worked. what services provide by spring cloud.
+29. Feign client and RestTemplate.
+30. how to cache without using 3rd party cache. : in map 
+
+---Zensar
+1. @Entity. @Entity vs @Table
+2. JPA Query to get Distinct empid and salary
+3. program to get all duplicate char using stream
+4. implimentation of filter in map
+5. Function and Identity
+6. impliment filter method to get the vowels
+7. write predicate method
+8. sql to get highest salary from each department from 2 tables(emp, dept).
+9. Controller code to get emp by id with response entity.
+
+---altemetrix
+1. Explain security and Jwt token creation and validation
+2. print sum of even no. using stream
+3. get non repetive char from string and return as string list.: collectors.joining(); or check 1st and last index if same then print.
+4. overriding rule.
+5. ways to instaniciation, scope of bean
+6. type of dependency injection
+7. resolve circular dependency
+8. git pull vs git fetch : pull is combination of fetch and merge
+9. inner vs outer join
+10. object creation for string.
+11. why string is immutable
+
+---go digit
+1. Do you write sql query?
+2. map vs flatmap
+3. Parent class of collection all collection classes interfaces.
+4. hashmap vs hashset
+5. career org details. all company where i work.
+6. comparator vs compareable
+7. create emp class with id and name variable. created 2 obj with same id and name, do e1.equals(e2): false. if hashcode() equals() overriden then true.
+8. read username and id from url http://localhost:7070/college/class/ram?numbwr=14 : using pathVariable and requestParam
+9. how you implimented spring security. what dependency used.
+10. 401 error code
+11. how microservice communicate. methods for restTemplate(): getForObject();
+12. program to get frequency of words from string india is my india india is my india my country.:  Arrays.stream(s.split(" ")).collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+13. sql to get 4th highest salary.
+14. read map data from application.yml
+15. what is toString.
+16. spring bean scope.
+17. How to perform exception handling in springboot.
+18. chanlenges face in projects.
+19. how to handle multiple db.
+
+---nihilent
+1. create vehicle interface impliment it in car truck and bus class. create list of vehicle and add car bus and truck. filter vehicle of type car and color red and size large and max speed 150km and then Map car object to cardetails.
+2. how to use JPA.
+3. diffrence between object create with new keyword and @Autowired.
+
+
+---Value Labs
+1. what is stream
+2. what is default method 
+3. what is diamond problem. how to solve it. how to soleve if both interface has same default method.
+4. Hashmap vs hashtable.
+5. hashtable vs synchronizedHashmap.
+6. synchronizedHashmap vs concurrentHashMap.
+7. Thread local:hread-local variables provide a way to maintain separate instances of data for each thread in a multithreaded environment, ensuring thread safety and isolation.
+8. @Restcontroller vs @Controller.
+9. @PathVariable vs @RequestParam vs @QueryParam
+10. how to Produce json and xml from same api
+11. How you implimented security.
+12. what happen if token expired? do user have to login again.
+13. how you do the deployment.
+14. downtime for production environment.
+15. DB exp, junit exp and cloud exp.
+
+---Value Labs 2nd 
+1. Spring Security.
+2. java 8 features
+3. what is stream 
+4. what is lembda
+5. get distinct from arraylist.
+6. create rest api for fetch all emp, add emp and update emp.
+7. create hashmap and put values.
+8. write code for jwt token generation and validation.
+
+---Valuelabs Internal
+1.
+Solid
+flow of mvc
+how dispatcher servelt know which contorller will be called: view Resolver.
+
+latest saled products
+select * from sales where sale_date = :date
+
+@Query(value="select * from sales where sale_date = :date", native=true)
+findAllBySalesDate(Date date)
+
+
+create restAPI 
+singleton 
+spring vs spring boot
+
+Java 8 grouping by coding questions like get department counting
+design pattern used in microservice.
+facade pattern with exp
+2nd higest salary. 
+best practice in sql to follow
+multiplicity annotation in jpa: 1to1 1tomany relations
+Oauth jwt aws restless
+how to use common code in multiple microservices how to make it as single code so can be reused. : shared Library
+prg to 1st non repeting char from string
+
+scaling
+docarazation
+containeriztion
+webflux
+singlaton immutable
+how lemda related to functional interface
+if we not mark interface with @functionalinterface will it be functional interface
+how to check the production issue
+status codes
+@controller
+aws 
+
+queary to get empcound by dept and count > 50
+why we use jpa
+how to write test case
+program to swap 2 var without using 3rd var.
+java 8 features.
+stream to convert list into map where id will be key
+
+feing client
+how to do load balance
+cirturt breaker
+default scope of bean in springboot
+java 8 features
+builder DP
+comparable vs comparator, which is best and why.
+prg to find most frequent char from string 
+why string is immutable
+yeild() in thread
+excutor service
+how to do 1 to many mapping
+archituctor of microservices
+internal working of hashmap
+how to connect to DB
+@primary
+Basic annotations
+jwt security
+throw vs throws
+base class of exception
+what is error
+--------------------------------------------------------------------------------------------------------------------------------------------------
+---- city corp--Internet
+var length arg, can we replace string args[] with var length arg in main()
+int i =9;  int i = 09; i == i = false; 09 is octal no.
+base class
+funtional interface vs abstract class
+collections
+Rehashing
+StringBuilder/Buffer and Primitive type can not be hashmap key as they do not override hashcode() and equals()
+failPass and failSafe in collection
+datatype to store rate of intrest:-> BigDecimal
+how long heap and stack memory store data: stack is sort live whereas heap lives from start of application to end of execution.
+marker interface. can we create own marker interface:-> Yes
+get list of emp how is reporting to manager id 200. :-> emp.stream.filter(e->getManagerId().equals(200)).collect(Collectors.toList()). use optional as well
+Circuit breaker pattern
+fault isolation
+print 1st repeating value from array
+return typee of predicate:-> boolean
+ArrayList to Array Conversion :-> al.toArray()
+when to call notify() notifyAll() and wait() and sleep()
+@quary in hibernet/jpa
+client certificate in ms
+oAuth in ms
+basic chanlenges with ms
+
+
+---Altimetrix--Internet
+
+Microservice Architecture and component
+fault tolerence annotations resilience4j
+what type of discovery client we are using
+microservice pattern
+how token generate and validity
+how token validation done
+abstract vs interface
+interface can have non static methods?
+concorenthashmap
+spy vs mock
+constructor vs setter based injection which is best
+put vs patch
+@Controller vs @RestController
+comparable vs comporator
+we have 2 beans same type we wanted to inject 2nd bean how to do that.
+git pull vs fetch
+serelization and serial version uiid
+create custom exception
+create post request api
+steps to connect db in spring
+implimentation of factory design pattern
+query to fetch record from both table
+how to handle exception in springboot
+springboot annotations
+stream methods 
+
+--------------Wipro--Internet
+Explain about @configuration, @autowire, @qualifier annotations in spring
+Internal working of REST
+Asked to create Singleton class
+Internal working of hashmap
+Explain the different features added in java 8
+Explain the use of springboot starter parent
+Difference between @Controller and @Restcontroller annotation
+In detail discussion about how interservice communication can be
+implemented in microservices
+How to microservice based architecture/applications?
+Explain what issue Service discovery solves
+How would you implement SSO for Microservice Architecture(I couldnt
+answer this)
+differences between SOA and Microservices
+How do you know/validate the query which you have written is the
+most efficient one
+Why and when should we use Stack or Queue data structures inst
+Arrays/Lists
+While reviweing the code what are the key things that you look for
+What is the most techinically challengin scenario you recenty encountered 
+
+Programming Questions on Java8 only:
+Given List< Employee> Employee has id, salary, deptid, status
+--program to print Max/Min employee salary from the given collection
+--program to print the max salary of an employee from each department
+--program to print active and inactive employees in the given collection
+program to print employee details working in each department
+program to print employees count working in each department
+
+--- synechron--Internet
+solid principle
+reflection api
+volatile
+class level and object level lock  -- imp
+actuator
+dirty checking hibernate
+fallback method ms
+jms and ibm mq
+diff between sequential and parellel stream
+sort descending by emp name:-> emp.stream().sorted(Comparator.comparing(Emp::getName).reversed().collect(Collectors.toList())
+get emp salary is more than 10000 and add 2000to all stream:-> emp.stream().filter(e->getSalary() > 10000).map(e-> new Emp(e.getName(),e.getSalary() +2000)).collect(Collectors.toList())
+create immutable object
+handle ArrayIndexoutofbondexception
+threadExcutorService
+how to know how many threads created by threadExcutorService:->  getActiveCount()
+type of dependency injection available
+lazy initialization in spring
+@bind in angular
+get 2nd higest element from int array
+which algo use by Arrays.sort(): Quicksort
+type of sorting algorithms available
+
+----------------Capgemini--Internet
+iterator vs listIterator
+make list read only.
+find the output sop('j'+'a'+'v'+'a'); // 418- take ascii value and add them
+springboot starter dependency
+idempotent methods: get,put, delete
+how to call rest api with springboot: RestTemplate.exchange()
+unique constraint in db:
+
+/////cognizent given
+a=4
+b=2
+
+for(int i=1;i<=10;i++){
+	if(b*i>=a){
+		b
+	}
+}
+
+///
+Employee class ->
+empId
+Name
+Email
+Department obj
+Salary
+Phone Number
+
+Department ->
+departmentId
+departmentName -
+
+Find out employee for Sales department
+
+empList.stream().filter(e->(e.getDepartment().getDepartmentName()).euqals("Sales")).collect(Collectors.toList());
+
+at
+Sunil LNU
+Sunil LNU says:a=4, b=2
+Sunil LNU says:Condition: Mod, / (not to use)
+Sunil LNU says:Employee class ->
+empId
+Name
+Email
+Department obj
+Salary
+Phone Number
+
+Department ->
+departmentId
+departmentName -
+
+Find out employee for Sales department
+Sunil LNU says:String a="Hello"
+Sunil LNU says:String a = new String("Hello")
+Sunil LNU says:a="Hi"
+Sunil LNU says:S.o.p("a")
+Sunil LNU says:Build an spring boot application:
+
+Conditions: get the employee data from db and send it as header ,
+Log the response to database before sending it to client
+Sunil LNU says:empName
+Sunil LNU says:empDepartment
+Sunil LNU says:empId-Request Param
+
+In array of 1 to 10, there are two threads thread1 and thread2, thread1 need to print "1", then thread2 need to print "2", then again thread1 need to print "3"...and go on. Final output should be "1 2 3 4 5 6 7 8 9 10". Use Multithreading to solve this program.
+
+
+In array of sorted numbers 1 to 100, three numbers are missing, need to find second largest number from missing numbers?
+
+Valuelabs Internal -----
+how you handle exception. : @ControllerAdvise class, @ExceptionHandler method or custom exception
+Solid principle
+how you handle authentication. : JWT
+what you return in case of valid auth: jwt token
+can we override static method? : no
+we have a query which is taking alot of time how you will optimize it.: avoid select *, replace subqueries with joins, use limit for pagination, or use caching, batch operation
+what is indexing: technique to speed up data retrival, allows to find row faster without scaning entire table
+different between stack vs heap: heap: objects and instance var, stack: local var, method calls, reference var
+depndency injection in spring
+we have a interface which have 2 implimentation i want to inject that interface how spring will know which one to inject? @Primary @Qualifier
+how to manage the transaction in hibernate: @EnableTransactionManagement main class and @Transactional in spring use.
+ACID property: Atomicity: all or nothing, Consistency:transaction always leave db in valid state, Isolation: transaction excute independently, Durability: permanent storage
+@controller vs @RestController: combination or @controller and @ResponseBody
+Singalton in java, how can we create
+java version
+map vs flatmap: map() work on stream whereas flatmap in used to work on stream of stream.
+we have 2 interface A and B both have same default method, we have class C which impliment both the interface. C want to invoke that default method, how jvm will know which method to invoke and what is the way to invoke, throw exception so override in c and then call using super().
+lazy vs egar fetching: Eger: load all data imediatly, lazy load data when accessed
+many to many mapping, how the database will look for many to many: 3 tables created 2 entity table 1 join table.
+we have a parent class which impliment the serilization and we have a child class which inherite the parent class, does child class is also serilizable?: yes
+checked vs unchecked exception: checked: filenotfound, unchecled: ArithmaticException
+generics in java: type erasure T or ?. It allows classes interfaces and methods to operate on objects of verious type while providing compile time safety
+immutable
+what is deadlock satuaction, how can we avoid: avoid using tryLock(): if (lock1.tryLock(100, TimeUnit.MILLISECONDS)) { ... }
+
+
+n+1 problem in db.
+ExcuterService
+How @transactional work internal flow
+Primanry vs Unique
+how indexing works what is index
+2nd highest salary
+how to handle parralel 

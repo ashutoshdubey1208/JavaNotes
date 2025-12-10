@@ -1,0 +1,162 @@
+#Kafka: Kafka is distributed event streaming plateform use to build real-time data pipeline and streaming application.
+
+#Topic: Logical category or channel where messages are sent. Example: orders, payments, users.
+
+#Partition: Each topic can have multiple partitions (0, 1, 2…) to allow parallelism. Each partition is ordered, and Kafka appends new messages at the end.
+ Kafka decides which partition a message goes to either based on the key or round-robin if no key is provided.
+
+# Key: Optional identifier used to determine which partition a message goes to. Kafka hashes the key to assign a partition. Example: payment_mode = "UPI" → all messages with this key go to the same partition.
+
+	Key: payment_mode = "UPI"
+	Kafka hashes "UPI" → message goes to Partition 1
+	All messages with key "UPI" always go to the same partition
+
+#Broker: Kafka Broker is the Server which stores data and serve producer/consumer requests. Runs on 9092.
+
+#Producer: App which send data to topic. Producer decide which topic to write.
+
+#Consumer: App which reads data from topic. from the latest or from the beginning.
+	spring.kafka.consumer.auto-offset-reset=earliest/latest/none
+	earliest: read from beginning of partition.
+	lates: read latest messages published. Default for kafka
+	none: Throw an exception if no previous offset is found.
+
+#Consumer Group: group of consumers cooperating to read a topic.Each partition is read by only one consumer in a group. Kafka guarantees partition assignment for load balancing.
+	Topic with 3 partitions
+	Consumer group with 3 consumers→ each consumer gets one partition
+
+#Zookeeper: Zookeeper is a centralized cordination service for distributed workload. it perform common cordination tasks such as electing a primary server, mapping group members, providing configuration information, naming and synchronization at scale. Runs at 2181 port.
+Zookeeper: A centralized service that manages the coordination of Kafka brokers. Zookeeper handles:
+	1.Cluster metada:tracked brokers(which one is alive).stored topic config.
+	2.Leader election: choose the controller broker. helps assigned partision leader.
+	3.Configuration management: distributed configuration updates to brokers.
+	4.Health Monit 
+
+#Flow:
+	Producer → Topic Partitions (stored on Brokers) → Consumer Group
+
+#Lists all topics on the Kafka:
+	kafka-topics.sh --list --zookeeper localhost:2181
+
+#Producing messages without a key is completely valid and very common. Kafka simply uses round-robin partitioning when no key is provided.You only need keys when:preserving order for the same entity. grouping related events.
+
+#We can increase parallel message processing using concurrency, Concurrency cannot exceed number of partitions for that topic.
+	Spring.kafka.listener.concurrency:3
+	or
+	@KafkaListener(topics = "demo-topic", concurrency = "3")
+
+#Messages are divided among consumers within the same consumer group.
+
+#Producer Configs:
+	retries: spring.kafka.producer.retries: 3
+	idempotence: spring.kafka.producer.properties.enable.idempotence: true
+
+Consumer Configs:
+	auto-offset-reset : earliest/latest/none
+	enable-auto-commit: true/false true: automatically. falase manually:
+		manually:
+			@KafkaListener(topics = "demo-topic")
+			public void listen(String msg, Acknowledgment ack) {
+				System.out.println(msg);
+				ack.acknowledge(); // commit offset manually
+			}
+
+#KafkaTemplate: it is class which is use to send messages to kafka topics.
+	kafkaTemplate.send("Topic", "Message");
+	kafkaTemplate.send("Topic", "Key","Message");
+	kafkaTemplate.send("Topic", Partition, "Key","Message");
+
+#Kafka Installation:
+1.Download :
+	cd ~/Downloads
+	tar -xzf kafka_2.13-3.9.1.tgz
+	sudo mv kafka_2.13-3.9.1 /usr/local/kafka
+
+2.Start Zookeeper:
+		/usr/local/kafka/bin/zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
+
+3.Start Kafka broker:
+		/usr/local/kafka/bin/kafka-server-start.sh /usr/local/kafka/config/server.properties
+
+4.Test Kafka:
+	Create a topic:
+		/usr/local/kafka/bin/kafka-topics.sh --create \
+		  --topic test-topic \
+		  --bootstrap-server localhost:9092 \
+		  --partitions 1 \
+		  --replication-factor 1
+
+	Produce messages:
+		/usr/local/kafka/bin/kafka-console-producer.sh \
+		  --topic test-topic \
+		  --bootstrap-server localhost:9092
+
+	Consume messages:
+		/usr/local/kafka/bin/kafka-console-consumer.sh \
+		  --topic test-topic \
+		  --bootstrap-server localhost:9092 \
+		  --from-beginning
+
+5. Add Kafka to PATH:
+	echo 'export PATH="/usr/local/kafka/bin:$PATH"' >> ~/.zshrc
+	source ~/.zshrc
+
+#Kafaka Implimentation with Springboot:
+#Producer:
+	1. add spring web, Spring for Apache Kafka, and Lombok annotations.
+	2. add this in application.properties file:
+		spring.kafka.bootstrap-servers=localhost:9092
+		spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+		spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+	3. create controller define these fields and create constructor:
+		public static final String PAYMENT_TOPIC = "payment-topic";
+		private final KafkaTemplate<String, String> kafkaTemplate;
+		private final ObjectMapper objectMapper;
+
+		public ProducerController(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper) {
+			super();
+			this.kafkaTemplate = kafkaTemplate;
+			this.objectMapper = objectMapper;
+		}
+	4. Create DTO Payment for accepting Request.
+	5. Create endpoint method:
+		@PostMapping("/publish")
+		public ResponseEntity<String> publishMessage(@RequestBody Payment payment) {
+			String paymentString = objectMapper.writeValueAsString(payment);
+			System.out.println(paymentString);
+			kafkaTemplate.send(PAYMENT_TOPIC, paymentString);
+			return ResponseEntity.ok("Message sent to Kafka Topic:" + PAYMENT_TOPIC);
+		}
+
+Consumer:
+	1. add spring web, Spring for Apache Kafka, and Lombok annotations.
+	2. add this in application.properties file:
+		spring.kafka.consumer.bootstrap-servers=localhost:9092
+		spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+		spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+		spring.kafka.consumer.group-id=payment-group
+		spring.kafka.consumer.auto-offset-reset=earliest
+	3. Create same DTO as Producer.
+	4. Create a Consumer class mark with @Component and define these fields and create constructor:
+		public static final String PAYMENT_TOPIC = "payment-topic";
+		private final ObjectMapper objectMapper;	
+
+		public KafkaConsumer(ObjectMapper objectMapper) {
+			super();
+			this.objectMapper = objectMapper;
+		}
+	5. create consume() and mark it with @KafkaListener
+		@KafkaListener(topics = PAYMENT_TOPIC)
+		public void consume(String message) throws Exception {
+			Payment paymentKafka = objectMapper.readValue(message, Payment.class);
+			System.out.println(paymentKafka);
+		}
+
+#Print kafka message,Key, Partition and Offset:
+	public void consume(ConsumerRecord<String,String> record) throws Exception {
+		Payment paymentKafka = objectMapper.readValue(record.value(), Payment.class);
+		System.out.println(paymentKafka);
+		System.out.println("Key: " + record.key());
+		System.out.println("Partition: " + record.partition());
+		System.out.println("Offset: " + record.offset());
+	}

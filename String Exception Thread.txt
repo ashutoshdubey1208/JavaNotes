@@ -1,0 +1,225 @@
+#String: String class is immutable. we can not perform any changes, If we try to perform any changes new object will be created.
+	String s= new String("Ashu");
+
+#StringBuffer: It is mutable class, we can perform any type of changes on object. This class is thread safe so every method is synchronized. Performance wise not recommended.
+
+	StringBuffer sb = new StringBuffer("Ashu");
+	sb.append("Dubey");
+** Thread safe: Other Thread wait untill first thread opration completed.
+
+#StringBuilder: It is also same as StringBuffer only difference is StringBuilder is not thread safe, so it is recommended when we want fast opration.
+	StringBuilder s = new StringBuilder("Ashu");
+
+# == vs equals(): == is an operator and equals() is a method of object class. == checks both object are same location or not and equals() checks content is same.
+
+#Why String is immutable: 
+	Security: immutable strings are secure as no malicious code can alter content of string object.
+	Thread Safety: immutable string are thread safe as because they can not be modified by multiple threads at same time.
+	Caching: immutable string can be cached more effectivly as their content can not be changed.
+
+#String Concatenation Scenario:
+		String s = "Ashu";		
+		String s1 = "Ashu";					<-- both Object in String Constant Pool
+		String s2 = new String("Ashu");		<-- Heap
+
+		s.equals(s1); -> true
+		s1.equals(s2); -> true
+	**when we use new keyword then 2 obj will be created 1 obj in heap and 1 refference obj in SCP. if object exists in SCP then only 1 obj will be created in Heap, no reff obj will be created in SCP. when we perform runtime operation that object will not store in SCP and if we not assign obj to runtime operation that will be elegible for GC. SCP objects are not elegible for GC. these obj are managed by JVM.
+
+		String s1 = new String("Ashu");
+		String s2 = new String("Ashu");
+		s1 == s2 -> false <-- 2 reff in heap
+
+		String s3 = "Ashu"; 
+		s1 == s3 -> false <-- 1 in heap 1 in SCP
+
+		String s4 = "Ashu"; 
+		s3 == s4 -> true <-- both pointing to same obj in SCP
+
+	* if both are constant JVM perform operation then store in SCP at compile time.
+		String s5 = "Ashu" + "Dubey";
+
+		String s4 = "Ashu Dubey";
+		s4 == s5 - > true  <-- both pointing same obj in SCP
+
+	* if var + constant then operation perform at runtime and runtime operation stored in heap.
+		String s6 = "Ashu";
+		String s7 = s6+ "Dubey";
+
+		s4 == s7 -> false
+	* if var is final then value replaced at compile time so is same as s5
+		final String s8 = "Ashu";
+		String s9 = s8 + "Dubey"
+
+		s4 == s9 -> true 
+------------------------------------------------------- End Of String ---------------------------------------------------------------------------------
+------------------------------------------------------- Exeception ------------------------------------------------------------------------------------
+
+#Exeception: Unwanted event that disturb normal flow of program is called exeception. Exeception handling required for gracefull termination of program. Exeception occures runtime only.
+
+#Exeception vs Error: Exeception are recoverable and solution can be done by programmer. Error are not recoverable. Error are caused due to system lack of resources. Error are unchecked.
+
+#Exeception Hierarchy: Throwable is parent class of exeception.
+												Throwable
+													|
+			|------------------------------------------------------------------------|
+		Execption   																Error
+			|--Runtime 	|-> Arithmatic Exeception 									  |-> VMError	|-> StackOverFlow Error
+			|			|-> NullPointer Exeception 									  |				|-> OutOfMemory Error
+			|			|-> ClassChecked Exeception 								  |	
+			|			|-> IndexOutOfBound Exeception 								  |-> Linkage Error |-Verify Error
+			|			|			|--> ArrayIndexOutOfBound Exeception 			  |
+			|			|			|--> StringOutOfBound Exeception 				  |-> Assertion Error
+			|			|-> IllegalArgument Exeception 								  |-> ExeceptionInIntilizerError
+			|
+			|						|-> NumberFormat Exeception
+			|
+			|--IoExeception	|-> EOF Exeception
+							|->	FileNotFoundExeception
+
+#Checked vs Unchecked Exeception: 
+	*Checked: Exeception which are checked by compailer for smooth execution of program at runtime are called checked Exeception.
+		Exp: 1. writing in file compiler gives FileNotFound Exception.
+			 2. If main thread sleep compiler gives Interupted Exeception.
+	*Unchecked: Exeception which are not checked by compailer  type of exeception are called unchecked Eceception.
+		Exp: Arithmatic Exeception (devided by zero).
+
+** If control not entered in try block, finally block will not execute.
+** multiple try block can not have 1 catch block. each try should have either catch or finally.
+** All Errors are unchecked.
+** All Runtime Exeception are unchecked.
+** Apart from Errors and Runtime exeception all exeception are checked exeception.
+** Throwable Exeception class are partly checked, Runtime Exeception & errors are unchecked, IOExeception & Intrupted Exeception are fully checked.
+
+#Try Catch: Dont write normal code inside try because if exeception occoures no code will be executes. we can use try catch inside catch block. if exeception outside try block their will be Abnormal termination.
+
+** if exeception occures in try block next statement will not execute.
+
+#Methods to print Exeception Message: 
+	1. e.printStackTrace():- Exeception Name, Description, StackTrace.
+	2. e.toString():- Exeception Name, Description.
+	3. e.getMessage():- Description.
+
+	Sop(e) and Sop(e.toString()) are same.
+
+#Try with multiple catch: using 1 catch block is not recommonded because there may be multiple execeptions, So we have to write multiple catch. In multiple  catch block order of catch block is very imp, that should be child to parent class. if we don't follow order compile time error will occours. if we take 2 catch for same exeception compile time error "Exeception already cought" occours.
+	Order:
+		child -> parant 
+		if parant -> child   <-- gives compile time error
+
+#Finally Block: must executable block, clean up codes are written in finally block.
+
+** if we not wanted to execute finally block then use System.exist(0); 
+** if try catch & finally all block return then finally block return will always gets highest priority.
+
+#Try with Resource: Automatic deallocation of resources. no need to write finally block, reduce complexity of code, readability increse. introduced in 1.7 version. we can use any no. of resourses but all resources should be seperated with semicolunm; whatever resourse are using that should be autocloeable Resource. 
+		try(DbConnection db = new DbConnection()){
+			risky code;
+		}catch(Exeception e){
+			handling code;
+		}
+
+#throw: to hand over our created exeception obj to JVM manually. use with customized exeception.
+		throw new ArithmeticExeception("devided by zero");
+		----- -------------------------------------------
+		  |							|
+	mannualy hand over to JVM 	creation of exeception object
+
+** if we use throw keyword with normal java object that will give compile time error "incompatible type found: test required Throwable". Only Throwable object can be throw.
+
+#throws: throws keywords used in method signature used to declare an exeception which might get thrown by function while executing code.
+
+#throw vs throws:
+	* throw: allow to throw single exeception at a time. throw both exeception. throw keyword is followed by exeception object. throw keyword is used  within method.
+
+	*throws: we can declare multiple exeception. throw checked exeception. throws is follows by exeception class name. throws keyword is used with method signature.
+
+
+#Custome checked and unchecked exceptions:
+	checked exeception: 
+					class MyCheckedException extends Exception{}
+
+	unchecked exeception: 
+					class MyUnheckedException extends RunTimeException{}
+
+------------------------------------------------------- End Of Exeception ---------------------------------------------------------------------------------
+------------------------------------------------------- Thread ------------------------------------------------------------------------------------
+
+#Thread: It is a light weight process which is part of program.
+	1. By extending Thread Class:- extend Thread class, override the run(), and start() to initiate thread.
+	2. By implimenting Runnable Interface:- impliment Runnable, impliment run(),create obj of class and pass that obj to Thread class when creating Thread obj, start() to start thread.
+
+**Why use runnable instead of thread: When we extend Thread class, we can’t extend any other class even we require and When we implement Runnable, we can save a space for our class to extend any other class in future or now.
+*Lifecycle:- 
+	New->Ready/Runnable->Running->Dead
+
+
+** In mulithreading output are not certain, Thread scheduler is responsible for managing threads. algorithm followed by Thread scheduler vary JVM to JVM (first come first serve, shortest job first, round robin etc). Thread scheduler use priority while allocating processor. the thread having higher priority will get chance first.
+
+*Priority:-
+	1->10
+
+	Thread.MIN_PRIORITY =  1
+	Thread.NORM_ PRIORITY = 5
+	Thread.MAX_PRIORITY =  10
+** if we try to give priority apart from 1-10 we will get runtime exeception: IllegalArgumentExeception. main thread have 5 priority as default.
+
+* yield():- pause current thread give chance to other same priority thread, if no same priority thread available and low priority thread available then its continue excution.
+
+* join():- thread wanted to wait untill some other thread. dependent on other thread.
+
+* sleep():-thread dont want to perform any operation for particular amount of time.
+
+*Syncronization: if multiple threads are operating simonteniously on same object then there is a chance of data inconsistency, to overcome this problem we use syncronization.It uses lock concept and locked thread with object untill excution of thread is not completed.
+
+#Inter Thread Communication: 2 threads are communicate using:
+	1. wait()
+	2. notify()
+	3. notifyAll()
+
+	The thread which expects updation will call wait(), thread which perform updation will call notify(), when updation completed. then waitinig thread get notification and continue with updated item.
+
+#Why wait(), notify(), notifyAll() is present in object class:-  Thread can call these methods on any objects thats why present in Object class. if these methods are present in Thread class then we can call these methods on thread objects only.
+
+#wait(): thread call wait() will release the lock and wait untill another thread invoke notify() or notifyAll() or specific time.
+#notify(): use to wake up single thread and release the object lock.
+#notifyAll(): use to wake up all thread that are in waiting state and release the object lock
+
+#Class Lock vs Object Lock: 
+	Object Level Lock: when execution starts in non-static synchronized code then jvm acquires object level lock. it will lock the object with 1 thread.
+	Class Level Lock: when execution starts in static synchronized code then jvm acquires class level lock. object will be locked for all instance of the class. then other class instance will be able to use the object.
+
+#Can we start thread twice: No if we try to do so then throw IllegalThreadStateException.
+	t.start();
+	t.start(); // IllegalThreadStateException
+#ThreadExcutorService:
+
+
+#synchronization vs lock(): in synchronization only one thread can access a shared resource at a time. lock is used multiple thread can access a shared resource in fair manner. in synchronization release of locked object is managed by JVM in lock we have to release it in finnaly block.
+
+#How to decide ThreadPool Size: for deciding thread pool size we need these 2 thing in mind:
+	1. No. of CPU Cores: min no. of threads = no. of available cores.
+	2. Type of Task: 
+		2.1 CPU Intensive: no. of threads = no or ideal cores. no ideal time available in CPU Intesive task.
+		2.2 IO Intensive: thread get blocks and cpu get ideal during IO operations. Hence scheduler can switch other eligible thread.
+
+#How to get no. of cores available: Runtime.getRunTime().availableProcessors();
+#How to get Thread Id: Thread.currentThread().getId();
+
+#Future: interface available in java.util.concurrent package. it represent the result of asynchronous computation(task running in thread). provides methods to:
+	get()/get(long timeout, TimeUnit unit): return the result of task. waits if still in excution then return after completion.
+	isDone(): return true id task is completed.
+	isCancelled(): return true if task is cancelled before completion.
+	cancel(boolean mayInterruptIfRunning): cancel the task.
+	exp:
+	public static void main(String args[]){
+		ExecutorService excutor = Executors.newThreadPool(2);
+		Callable<String> task= ()->{
+			Thread.sleep(1000);
+			return "Task Completed"
+		};
+		Futere<String> future = excutor.submit(task);
+		Sysout("Is task done? "+ future.isDone());
+		Sysout("Result: "+ future.get());
+	}
+#CountdownLatch vs CyclicBarrier:

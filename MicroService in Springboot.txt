@@ -1,0 +1,413 @@
+###MicroService in Spring Boot:
+#Step 1 (First MicroService): Create Springboot project with these dependencies: Spring Web, Spring Data JPA, Lombok, MySql Driver. and impliment the service API.
+
+#Step 2 (Second MicroService): Create new Springboot project with these dependencies: Spring Web, Spring Data JPA, Lombok, MySql Driver. and impliment the service API.
+    2.1: Create VO(value object) package and add the same class to accpect the response from RestTemplete without @entity or @id Annotations.
+    2.2: Create new class under VO package to return the custom response(ResponseTemplateVO).
+    2.3: Create restTemplate method and annotate with @Bean in main application Class.
+          Exp: 
+              @Bean
+              public RestTemplate restTemplate() {
+                return new RestTemplate();
+              } 
+
+    2.4: @Autowire RestTemplate in service class.
+        Exp:
+            @Autowired
+            private RestTemplate restTemplate;
+
+    2.5: Create object of ResponseTemplateVO class and call RestTemplate method to get response from other service under service class method.
+        Exp:
+              public ResponseTemplateVO getUserWithDepartmentById(Long id) {
+                log.info("inside getUserWithDepartmentById service");
+                ResponseTemplateVO vo = new ResponseTemplateVO();
+                User user = uRepo.findByUserId(id);
+                Department dept = restTemplate.getForObject("http://DEPARTMENT-SERVICE/departments/get-department/" + user.getDepartmentId(), Department.class);
+                vo.setDepartment(dept);
+                vo.setUser(user);
+                return vo;
+              }
+#Step 3 (Service Registry): Create new Springboot project with these dependencies: Eureka Server.
+      3.1: Add @EnableEurekaServer Annotation on main application Class.
+      
+      3.2: Add these configrations in application.property file: 
+            server.port=8761
+            eureka.client.registry-with-eureka=false
+            eureka.client.fetch-registry=false
+      
+      3.3: Add Eureka Discovery Client Dependency to other MicroSerrvices so that they can connect with Eureka Server. for this explore Eureka Discovery Client on Spring Initilizer go to pom.xml and 
+          1. copy <spring-cloud.version> under <properties>
+          2. copy spring-cloud-starter-netflix-eureka-client dependency under <dependencies>
+          3. and copy <dependencyManagement> and <build> and paste it in your application.
+
+      3.4: Add these configrations to all other Micro Services:-
+            server.port= 9001
+            spring.application.name= DEPARTMENT-SERVICE
+            eureka.client.register-with-eureka=true
+            eureka.client.fetch-registry=true
+            eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+            eureka.instance.hostname=localhost
+
+#Step 4 (API Geteway): Create new Springboot project with these dependencies: Eureka Discovery Client, Gateway, Spring Boot Actuator.
+      4.1: Add @EnableEurekaClient Annotation on main application Class. (depricated so no need to add now)
+
+      4.2: Add these configrations in application.property file: 
+
+            server.port=9191
+            spring.application.name=API-GATEWAY
+
+            spring.cloud.gateway.routes[0].id=USER-SERVICE
+            spring.cloud.gateway.routes[0].uri=lb://USER-SERVICE
+            spring.cloud.gateway.routes[0].predicates[0]=Path=/users/**
+
+            spring.cloud.gateway.routes[1].id=USER-SERVICE
+            spring.cloud.gateway.routes[1].uri=lb://DEPARTMENT-SERVICE
+            spring.cloud.gateway.routes[1].predicates[0]=Path=/departments/**
+
+            eureka.client.register-with-eureka=true
+            eureka.client.fetch-registry=true
+            eureka.client.serviceUrl.defaultZone  = http://localhost:8761/eureka
+
+            eureka.instance.hostname=localhost
+
+#Step 5 (Hystrix Circuit Breaker):
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+Mphasis: MicroServices:
+
+Spring cloud: 
+
+---------------------------
+Case: we have 2 services Employee-Service(8081) and Address-Service(8082).
+1. Service Discovery/ServiceRegistry/Eureka Server: It act as registry in which address of all instances are tracked with ip and port. It helps us to know where each instances are located and whether services are Up or Down. While communicating with other services we can use Service Name instead of Host and Port. Runs at 8761
+    1.use Eureka server dependency.
+    2.use @EnableEurekaServer on main class after @SpringbootApplication.
+    3.add these in application.property.
+        server.port=8761
+        eureka.client.register-with-eureka=false
+        eureka.client.fetch-registry=false
+        eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
+        eureka.instance.hostname=localhost
+
+    Verify Eureka Server is running: localhost:8761 
+
+2. Discovery Client/Eureka Client/Service Client: It is any service which register with Service Discovery and retrive information about other services to enable communication in a microservice architecture. Runs at any defined port: 8081
+    1.use Eureka Discovery Client dependency.
+    2.use @EnableDiscoveryClient on main class after @SpringbootApplication.
+    3.add these in application.property after other properties like mysql properties.
+        server.port=8081
+        eureka.client.register-with-eureka=true
+        eureka.client.fetch-registry=true
+        eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka
+        eureka.instance.hostname=localhost
+
+3. Communication with Feign Client: getting Employee service details in Address service. these things we are doing in Address Service
+    1.use OpenFeign dependency in service.
+    2.use @EnableFeignClients after @EnableDiscoveryClient.
+    3.add employee.service.url=http://localhost/8081/employees in application.properties. (path for controller)
+    4.crete new package client and add interface EmployeeClient and use @FeignClient(name = "Employee", url = "${employee.service.url}")
+    5.add those method which we are plaining to call from other service. in our case we are calling getSingleEmployee() from Employee service so add this in EmployeeClient:
+        @GetMapping("/{id}")
+        EmployeeDto getSingleEmployee(@PathVariable Long id);
+    6.copy EmployeeDto from Employee-Service dto package to Address-Service dto package.
+    7.Inject EmployeeClient where we want to call, then call the the created method from EmployeeClient. in our case we call in AddressServiceImpl class:
+        inject :
+            private final EmployeeClient employeeClient;
+            public AddressServiceImpl(EmployeeClient employeeClient) {
+                this.employeeClient = employeeClient;
+            }
+        calling:
+            EmployeeDto emp = employeeClient.getSingleEmployee(addressRequest.getEmpId);
+
+4.Auth Service: Provide Jwt Token for login.
+    1.add spring-boot-starter-security, jjwt-jackson, jjwt-impl and jjwt-api dependencies.
+    2.create SecurityConfig class mark it with @Configuration and @EnableWebSecurity.
+  #For Password Encoding:
+    3.create PasswordEncoder bean in SecurityConfig class mark it with @Bean:
+        @Bean
+        public PasswordEncoder passwordEncoder(){
+            return new BCryptPasswordEncoder();
+        }
+    4.inject in UserService class for encrypting the password while storing:
+        @Autowired 
+        PasswordEncoder passwordEncoder;
+
+        user.setPassword(passwordEncoder.encode(user.getPassword());
+  #For User Registration:
+    5.create SecurityFilterChain bean in SecurityConfig class:
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http.csrf(c->c.diseble())
+                .authorizeHttpRequests(req -> {
+                    req.requestMatcher(("/auth/register", "/auth/generate-token")).permitAll();
+                    req.anyRequest().authenticated();
+                }).userDetailsService(userDetailsService())
+                .httpBasic(Customizer.withDefaults());
+            return http.build();
+        }
+    6.create AuthenticationManager bean:
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+            return config.getAuthenticationManager();
+        }
+    7.create UserDetailsService Bean:
+        @Bean
+        public UserDetailsService userDetailsService(){
+            return new MyUserDetailsService();
+        }
+
+    8.creta MyUserDetails class and impliments UserDetails interface override required methods.
+        inject User class and return users details in getUserName(), getPassword() and getAuthorities() overridden methods.
+            return user.getUsername();
+            return user.getPassword();
+            return Arrays.stream(user.getRoles().split(",")).map(SimpleGrantedAuthority::new).toList();
+    9.create MyUserDetailsService class impliments UserDetailsService and override loadUserByUsername().
+        public class MyUserDetailsService impliments UserDetailsService {
+            @Autowired
+            UserRepo userRepo;
+
+            @Override
+            public UserDetails loadUserByUsername(String Username) throws UsernameNotFoundException {
+                User user userRepo.findByUsername(username).orElseThrow(()->new RunTimeException("User not found"));
+                return new MyUserDetails(user);
+            }
+
+        }
+  #Jwt Token Generation:
+    10.create JwtUtil class mark it with @Component
+        @Component
+        public class JwtUtil {
+            public static final SECRATE_KEY = "qwertyuiopokjhgfdsasdfghjkjhgfdsasdfghjkjhgfdsasertyu";
+            public String generateToken(String username){
+                Map<String, Object> claims = new HashMap<>();
+                claims.put("email", "abc@xyz.com");
+
+                return jwts.builder().subject(username)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expireAt(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
+                .claims(claims)
+                .signWith(getKey())
+                .compact();
+            }
+
+            private Key getKey(){
+                byte[] bytes = Base64.getDecoder().decode(SECRATE_KEY);
+                return keys.hmacShaKeyFor(bytes);
+            }
+
+            private Claims getClaims(String token) {
+                return Jwts.parser().verifyWith((SecretKey) getKey())
+                .build().parseSignedClaims(token)
+                .getPayload();
+            }
+
+            public Date extractExpiration(String token){
+                return getClaims(token).getExpiration();
+            }
+        }
+  #Api for token generation:    
+    11.inject AuthenticationManager bean in controller and create generateToken(): (JwtTokenResponse and LoginRequest class for accpeting request and response)
+        @PostMapping(/generate-token)
+        public JwtTokenResponse generateToken(@Requestbody LoginRequest loginReq){
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword()));
+
+            if(authentication.isAuthenticated()){
+                return userService.generateToken(loginReq.getUsername());
+            } else {
+             throw new RuntimeException("Invalid Credentials");
+            }
+
+        }
+5.API Gateway:
+    1. use gateway and eureka discovery client all 3 JWT dependency. remove starter-web dependency and remove -server-webmvc from gateway dependency in pom.
+    2. change server.port=9090 in application.properties. create application.yml file for configuring properties.
+        eureka:
+            instance:
+                prefer-ip-address: true
+
+            client:
+                register-with-eureka: true
+                fetch-registry: true
+                serviceUrl:
+                    defaultZone: http://localhost:8761/eureka
+        spring:
+            cloud:
+                gateway:
+                    routes:
+                        - id: EMPLOYEE
+                          uri: lb://EMPLOYEE
+                          predicates:
+                            - path=/employees/**
+                          filters:
+                            - AuthFilter
+
+                        - id: ADDRESS
+                          uri: lb"//ADDRESS
+                          predicates:
+                            - path=/address/**
+                            filters:
+                                - AuthFilter
+
+                        - id: AUTH
+                          uri: lb://AUTH
+                          predicates:
+                            - path=/auth/**
+    3.create AuthFilter class and extends AbstractGatewayFilterFactory<AuthFilter.config> mark with @Component and override apply()
+        @Component
+        public class AuthFilter {
+            @Autowired
+            private Validator validator;
+            @Autowired
+            private JwtUtil jwtUtil;
+
+            public AuthFiler(){
+                suoer.(Config.class); 
+            }
+            @Override
+            public GatewayFilter apply(Config config){
+                return (exchange, chain)->{
+                    if (validator.predicate.test(exchange.getRequest())) {
+                        if(!exchage.getRequest().getHeader().containsKey(HttpHeaders.AUTHORIZATION)){
+                            throw new RunTimeException("Authorization Header is missing");
+                        }
+                        String authHeader = exchange.getRequest().getHeader().get(HttpHeaders.AUTHORIZATION).get(0);
+                        String token = null;
+                        if(null != authHeader && authHeader.startsWith("Bearer ")){
+                            token = authHeader.substring(7);
+                        }
+                        try {
+                            jwtUtil.validateToken(token);
+                        } catch(Exception e){
+                            throw new RunTimeException("Invalid token");
+                        }
+                    }
+                    return chain.filter(exchange);
+                }
+            }
+
+            public static class Config {
+
+            }
+        }
+    4.create Validator class mark with @Component
+        @Component
+        public class Validator {
+            private final AntMatcher antMatcher = new AntMatcher();
+            public  static final List<String> endpoints = List.of("/register-user","/generate-token", "/validate-token");
+
+            public Predicate<ServerHttpRequest> predicate = ServerHttpRequest serverHttpRequest-> {
+                String path = serverHttpRequest.getURI().getPath();    
+                return endpoints.stream().noneMatch(uri-> antMatcher.match(uri, requestPath));
+
+            };
+        }
+    5.create JWTUtil class mark with @Component create Token for validating token. copy Secrate and getKey() from JWTUtil from Auth Service and paste in this.
+        @Component
+        public class JWTUtil {
+            public static final SECRATE_KEY = "qwertyuiopokjhgfdsasdfghjkjhgfdsasdfghjkjhgfdsasertyu";
+
+            private Key getKey(){
+                byte[] bytes = Base64.getDecoder().decode(SECRATE_KEY);
+                return keys.hmacShaKeyFor(bytes);
+            }
+
+            public void validateToken(String Token){
+                Jwts.parser().verifyWith((SecretKey) getKey()).build().parseSignedClaims(token);
+            }
+
+        }
+6.Circuit Breaker (Resilience4j):It is a resilience pattern use to prevent cascading failure in microservices.it monitor calls between services.if 1 service is down or slow it open the cicuit and stop the further calls. instead of waiting for timeout, it returns the fallback response immediatly. Circuit Breaker always implimented at API Gateway.
+    1.use spring-cloud-starter-circuitbreaker-reactor-resilience4j and spring-boot-starter-actuator dependency in API Gateway service.
+    2.add these config in API Gateway yml:
+            Emp:
+        spring:
+            cloud:
+                gateway:
+                    routes:
+                        - id: EMPLOYEE
+                          uri: lb://EMPLOYEE
+                          predicates:
+                            - path=/employees/**
+                          filters:
+                            - AuthFilter
+                            - name: CircuitBreaker
+                              args:
+                                name: EMPLOYEE-SERVICE
+                                fallbackUri: forword:/employeeServiceFallback
+                            Address:
+                            - AuthFilter
+                            - name: CircuitBreaker
+                              args:
+                                name: ADDRESS-SERVICE
+                                fallbackUri: forword:/addressServiceFallback
+
+    after these add these as well:
+        resilience4j:
+            timelimiter:
+                intances:
+                    EMPLOYEE-SERVICE:
+                        timeoutDuration: 5s
+                    ADDRESS-SERVICE:
+                        timeoutDuration: 5s
+            circuitbreaker:
+                intances:
+                    EMPLOYEE-SERVICE:
+                        registerHealthIndicator: true
+                        eventConsumeerBufferSize: 10
+                        slidingWindowSize: 5
+                        minimumNumberCalls: 5
+                        failureRateThreshold: 50
+                        waitDurationInOpenState: 6s
+                        automaticTransitionFromOpenToHalfOpenEnable: true
+                        permittedNumberOfCallsInHalfOpenState: 3
+                        slidingWindowType: COUNT_BASED
+                    ADDRESS-SERVICE:
+                        registerHealthIndicator: true
+                        eventConsumeerBufferSize: 10
+                        slidingWindowSize: 5
+                        minimumNumberCalls: 5
+                        failureRateThreshold: 50
+                        waitDurationInOpenState: 6s
+                        automaticTransitionFromOpenToHalfOpenEnable: true
+                        permittedNumberOfCallsInHalfOpenState: 3
+                        slidingWindowType: COUNT_BASED
+            management:
+                endpoints:
+                    web:
+                        exposure:
+                            include: health,info,matrics,circuitbreakers
+                health:
+                    circuitbreakers:
+                        enabled: true
+                    endpoint:
+                        health:
+                            show-details:always
+
+    3.create a new package controller and create a FallbackController class mark it with @RestController.
+    4.creata same name method employeeServiceFallback() and addressServiceFallback() mentioned in yml.
+        @GetMapping("/employeeServiceFallback")
+        public Mono<String> employeeServiceFallback(){
+            return Mono.just("Employee service is down. please try later.")
+        }
+7.Config Server: Read Properties from git. use eureka discovery client and config server dependency.
+    1.create new repo on git and create a new file application.yml. and write the properties in this file. for Specific Servieses we have to create specific service name file. employee.yml or address.yml
+    2.create application.yml file in Config Server.
+        spring:
+            cloud:
+                config:
+                    server:
+                        git:
+                            url: path-to-repo
+                            clone-on-start: true
+    3.mark main class with @EnableDiscoveryClient and @EnableConfigServer annotation.
+    4.add config-client dependecny in service which we want to use this config server and import properties from Config Server in application.properties:
+        spring.config.import= optional:configserver:http://localhost:8888
+
+
+
+
+                        
+
+
+
+

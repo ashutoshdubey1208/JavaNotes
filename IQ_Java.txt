@@ -1,0 +1,568 @@
+IQ:-
+#HTPP Method:
+	Get: safe method no effect on multiple calls
+	Put: Use PUT when you want to update a resource.PUT overwrites a resource in its entirety.PUT is idempotent.
+	Post: Use POST when you want to create a new resource.POST creates a new record in the database.POST is not idempotent.
+	Patch: Use PATCH when you want to make partial updates to a resource.
+	Delete: safe method as no effect on multiple calls.
+
+#Java Code Compilation and Runtime:-
+	*Compilation:- Java code(demo.java)->compiler-> Bytecode(demo.class).
+	
+	*Runtime:- classfile(demo.class)->ClassLoader->Bytecode Verified->Interpreter->Runtime->Hardware.
+
+#JDK:- JRE + interpreter/loader + compiler + Javadoc etc.
+#JRE:- JVM + core classes, + supporting files etc.
+#JIT:- improve application performance by compaling bytecode to native machine code at runtime.
+
+#JVM Architecture: 
+	1. Class Loader: subsystem of JVM use to load class file.
+	2. Memory Area: 
+		Class Area: stores runtime constant pool, field and method data, the code for method.
+		Heap: runtime data area in which objects are allocated.(Object and instance variable)
+		Stack: holds local variables, method execution and partial results, and plays a part in method invocation and return. new JVM Stack for each Thread.
+		PC Register: contains the address of the Java virtual machine instruction currently being executed.
+		Native method Stack: contains all the native methods used in the application.
+	3. Execution Engine: combination of Virtual processor, Interpreter and JIT. 
+	4. Java Native Interface: allow to comunicate between different languages.
+
+#Class Loader: Java class loader subsystem follows Delegation Hierarchy Algorithm. Jvm check if class already loaded or not. if not loaded Jvm request class loader subsystem to load the class. class loader subsystem request to Appliaction class loader. Appliaction class loader delegate request to Extension class loader. Extension class loader delegate request to Bootstrap class loader. all class loader serach in respective class path. if avaialble then it load the class else it will throw RuntimeExecption ClassNotFoundExpection.
+	1. Bootstrap class loader: search class in Bootstrap class path (Jdk\Jre\lib\*.jar) 	// rt.jar
+	2. Extension class loader: search class in Extension class path (Jdk\Jre\lib\ext\*.jar)	// jre/lib/ext
+	3. Application class loader: search class in Application class path (envireonment variable classpath). 
+
+#JAR (Java Archive): group of .class files. It need java only to run.
+#WAR (Web Archive): This is used for web based applications. It may contains Images. Html, property files, compiled code etc. It need webserver (tomcat) to run.
+#EAR (Enterprise Archive): This is used for Java EE based applications. It may contains war, jar, ejb-jar, rar etc. it requires JBoss/websphare to run.
+
+#Maven vs Gredle:Maven uses XML configuration while uses more flexible Groovy/kotlin DLS. Maven is simpler and has a more standarized structure while gredle offer more cutomization.
+
+#Polimorphism:- One name Many form
+	* Compiletime Polimorphism:- Overloading
+	* Runtime Polimorphism:- Overriding (Inheritence)
+	
+#main() can be overridden but compailer call original main().
+#main() without String Args[] will not excute but code can be compile.
+#Contstructor return current call instance.
+#We can create program without using main method. class can be compiled and excuted using static block.till 1.6 after 1.7 not possible.
+#Excution process:- first static block will excuted then static methods then object will be created then instance methods will be excuted.
+
+#Access modifiers:-
+		*public:- accessible to all classes.
+		*private:- accessible only that class in which its defined.
+		*protected:- accessible within same package and subclasses in diffrent package.
+		*default:- accessible only same package.
+		
+#static:- use for memory management(save memory). static belong to class not with instance.
+	*Variable:- static var is use to reffer common property for all objects.static var takes the memory only once in the class area at the time of class loading.
+		Exp:- class Student(){
+					int rollno;//instance variable  
+					String name;  
+					static String college ="ITS";//static variable  
+				}
+	*method:- static method can be invoke without object.static method can access and change value of static data member.
+		Exp:- class Student{  
+					 int rollno;  
+					 String name;  
+					 static String college = "ITS";  
+					 //static method to change the value of static variable  
+					 static void change(){  
+					 college = "BBDIT";  
+				}  
+	*block:- It can be excuted before main().use to intilize static data member.
+		Exp:- class A2{  
+					  static{System.out.println("static block is invoked");}  
+					  public static void main(String args[]){  
+					   System.out.println("Hello main");  
+					  }  
+					}  
+
+#Object class is parent class of all classes. use when we reffer the any object which type we don't know. 
+	methods (11):- getClass(),hashCode(),equals(Object o),clone(),toString(),notify(),notifyAll(),wait(long timeout),finalize();
+	wait() has 3 variations: wait(), wait(long timeout), wait(long timeout, nanos) and all throws InterruptedException.
+	
+#Wrapper classes:- use to convert primetive type to object(autoboxing) and object type to primetive(unboxing).
+
+#strictfp: keyword use to ensure that get same result on every plateform if you perform operation on floating point variable.
+	
+#Voletile:- keyword use with variable which tells value of variable can be changed anytime without taking any action. It used to indicate that a variable's value may be modified by multiple threads simultaneously.
+
+#Serialization:- process to turn object in to byte stream so that object can be store in disk or sent into network. for serializing writeObject() of ObjectOutputStream class and for deserialization readObject() of ObjectInputStream class and implements Serializable interface in class.
+
+#Static variable will not serialize.
+
+#Cohesion vs Coupling: Cohesion is defined as the degree of relationship between elements of the same module. Coupling is defined as the degree of interdependence between the modules.
+
+#Transient:- It is variable modifier used in serialization. at the time of serialization if we don't want to save value of a particular variable then we use transient keyword. use when we dont want to store value of any variable.
+
+#Syncronization:- It is a machenism that ensures only 1 thread at a time can access the shared Resource. It uses a lock so that 1 thread enters the cretical section while other thread waits. It has capability to control access of multiple thread to any shared resource.It allow lock macanism to lock 1 thread at a time with resource other thread wait for their turn.
+
+#Marker Interface:- Interface which does not have any methods available inside that. It provides run-time information about objects, so the compiler and JVM have additional information about the object. Exp. Serializable, Clonnable, Remote Access.
+
+#Functional interface:- Interface which contains only one abstract method. but can have any number of default and static method. Exp. Runnable,Comparable,ActionListener
+
+#Functional programming:Functional programming is a programming paradigm in which we try to bind everything in pure mathematical functions style.
+Functional Programming is stateless and provide parallel processing.
+
+** OOPs makes code understandable by encapsulating moving parts.
+** Functional programming makes code understandable by minimizing moving parts.
+
+#which algo use by Arrays.sort(): Quicksort
+
+# Why abstract classes have a constructor: The main purpose of the constructor is to initialize the newly created object. In abstract class, we have an instance variable, abstract methods, and non-abstract methods. We need to initialize the non-abstract methods and instance variables, therefore abstract classes have a constructor.
+
+#Why functional programming required in java:- to make code more concise, less complex, more predictable, and easier to test compared to the legacy style of coding.
+
+#Java 8 Features:-
+*Lembda Expression:- to provide support of functional programming to java. ()->sout("Hello"),l.stream().forEach((c)->sout(c));
+*Stream:- use to perform functional style operations on element of list/set.Exp. List<Intger> l= l.stream().sorted().collect(collectors.toList());
+*Functional Interface:- only 1 abstract method, can have multiple default and static methods.
+*Method References:- to call method of functional interface. Exp. for static method - InterfaceName::methodName, for instance InterfaceIntance::methodName
+*Optinal Class:- check presence of value.(minimise NullPointerException), present in Java.util package.
+*ForEach:- use to iterate elements. Exp. gameList.forEach(games->sout(games));
+*Date/Time API:- New data time api added, available in java.time package. new Date/Time API is immutable and thread safe.
+
+#Memory Enhancement in java 8: 
+	1. Metaspace (Permanent Generation Replacement): Java 8 introduced Metaspace as a replacement for the Permanent Generation (PermGen) in Java 7 and earlier versions. Metaspace is responsible for storing metadata about classes, methods, and other JVM internals. Unlike PermGen, Metaspace dynamically resizes itself based on the application's needs, reducing the risk of running out of memory due to class metadata.
+	2. String Deduplication: The String Deduplication feature aims to reduce memory consumption by eliminating duplicated String instances in the heap.
+	3. G1 Garbage Collector Improvements: G1 provides better control over memory management and is designed to be more suitable for large heaps.
+	4. Parallel Garbage Collector Improvements: The Parallel Garbage Collector (also known as throughput collector) received some improvements in Java 8, making it more efficient for applications that prioritize throughput. It is designed for applications with low pause time requirements.
+
+#Interface Vs Abstract Class Java 8:-
+*Interface:- It can have only abstract,default, static methods and final and static variables.
+*Abstract Class:- It can have all type of methods (private,default,protected,public,abstract,static etc), and all type of variables. 
+
+#A functional interface can extends another interface only when it does not have any abstract method.
+
+# Optional.of vs Optional.ofNullable: Optional.of is use to create object of optional. it expect value is present. if value is null it will throw nullPointerExeception. whereas Optional.ofNullable is use to create object of optional even if value is null. if value not present it will not throw exeception.
+
+#findAny() vs findFirst():The findAny() method returns any element from a Stream, while the findFirst() method returns the first element in a Stream.
+
+#Java 11 Features:
+* New String Methods: isBlank, lines, strip, stripLeading, stripTrailing, and repeat. strips methods are similar to trim() with fine control and unicode support.
+* New File Methods: writeString(), readString() added
+	Exp. Path filePath = Files.writeString(Files.createTempFile(tempDir, "demo", ".txt"), "Sample text");
+	String fileContent = Files.readString(filePath);
+*New Methods List.copyOf() added in collection, it will return unmodifiable copy of List. if try to perform add or remove operation the it will throw "UnsupportedOperationExeception". 
+	Exp: List<Integer> newList = List.copyOf(someList).
+	newList.add(4) -> throw "UnsupportedOperationExeception"
+
+*New Methods toUnmodifiableList() added in stream Collectors: it will throw "UnsupportedOperationExeception" when perform add or remove operations. 
+	Exp: List<Integer> newList= list.stream().filter(i->i%2==0).collect(Collectors.toUnmodifiableList());
+	 newList.add(4); -> throw "UnsupportedOperationExeception"
+
+*toArray() method added: use to transform list to array. 
+	Exp: List<String> list = Arrays.asList("Ram","Shyam", "Mohan");
+	String array[] = list.toArray(String[]::new);
+
+*Predicate.not() added in stream: checks for not condition.
+	Exp: list.stream().filter(Predicate.not(String::isBlank))
+
+*Local variable syntax for lambda: 
+	Exp: list.stream().map((@Nonnull var x) -> x.toUpperCase()).collect(Collectors.joining(", "));
+
+*HTTP Client: after adding in java 9 HTTP API improves overall performance and provide support for both HTTP 1.1 and HTTP 2.
+	Exp:HttpClient httpClient = HttpClient.newBuilder()
+	  .version(HttpClient.Version.HTTP_2)
+	  .connectTimeout(Duration.ofSeconds(20))
+	  .build();
+	HttpRequest httpRequest = HttpRequest.newBuilder()
+	  .GET()
+	  .uri(URI.create("http://localhost:" + port))
+	  .build();
+	HttpResponse httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+	assertThat(httpResponse.body()).isEqualTo("Hello from the server!");
+
+*Running Java Files: we don't need to compile the Java source files with javac explicitly anymore
+	Exp: Java 8
+		$ javac HelloWorld.java
+		$ java HelloWorld 
+		Hello Java 8!
+	Java 11
+		$ java HelloWorld.java
+		Hello Java 11!
+	
+#Java 17 Features:
+* 
+
+#Relationship between classes: 2 types:
+	1. Inheritance (Is-A ): relation build using extends keyword one class to other. Dog Is-A Animal. tightly coupled. 
+	2. Assosiation (Has-A) : relation build when reff var is assigned or object created of other class. Car Has-A Engine. loosly coupled.
+		1. Aggregation: weak bonding, car Has-A music player. if car not exist music play is independent.
+		2. Association: strong bonding, car Has-A engine. if car not exist engine has no use.
+
+#Loose Coupling and Tight coupling:
+
+
+#Type of functional interface:
+	Predicate: for boolean condition 	: test()
+	Function: give input get output 	: apply()
+	Supplier: supply the object 		: get()
+	Consumer: consume the data 			: accept()
+
+#Singleton Class: Only 1 object can be created. if tried to clone() will throw Exception 'can not create clone of singleton class'.
+	1. constructor private
+	2. variable private static 
+	3. static methods
+
+#Ways to break Singleton Class:
+	1. Reflection: we can create 1 obj and loop through Singleton.class.getDeclaredConstructors(), then setAccessible(true), call 
+		instance2 = (Singleton)constructor.newInstance(); 
+	and print hasCode of both obj that will be different. to avoid this we can make class as enum.
+
+	2. Serialization: after Serialization we perform de-Serialization on obj that time new object will be created. To overcome this issue, we have to implement the method readResolve() method in singleton class. 
+
+	3. Cloning: create new class SuperClass impliments Clonable and override clone() to return super.clone(), now extends SuperClass in Singleton class, now create obj of Singleton class and call clone() with that. To overcome this issue, override clone() method and throw an exception from clone method that is CloneNotSupportedException.
+
+#Immutable Class:
+	1. Class final
+	2. variable private final
+	3. no setter
+	4. initilize all fields in constructor
+
+#Enum: data type which contains a fixed set of constants.
+
+#Marker Interface: Interface which does not contain any method. It provide runtime type information about object. also called tagging interface. 
+	exp:- Serializable, Clonnable, RemoteAccess Interface.
+
+#Java Executor Service: It is interface which allows to excute tasks on threads asynchronously. 
+		ExecutorService es = new Executors.newFixedThreadPool(5);
+		for(int i = 0; i<=25; i++){es.execute(new Service(i));}
+		es.shutdown();
+	execute(): to start the thread executor service.
+	shutdown(): to shutdown the thread executor service. es.shutdown();
+	awaitTermination(timeout,unit): wait for fixed time then shutdown. es.awaitTermination(10, TimeUnit.SECONDS);
+	submit(new Runnable()):
+	submit(new Callable()):
+	invokeAny():
+	invokeAll():
+	getActiveCount():Show how many threads are created by executor service.
+
+#RestTemplate: It is use to consume 3rd party web services. restTemplate.getForObject("url",Object[].class) is called.
+
+#Design Patterns: A design pattern is a well-described solution to a common software problem.
+	#Benefits:
+		1. Industry-standard approach to solving recurring problem.
+		2. Reusability, robust,  Highly maintainable code.
+
+	#Types of patterns:
+		1. Creational: provide solutions to instantiate an Object in the best possible way for specific situations.
+		2. Structural: provide different ways to create a Class structure (for example, using inheritance and composition to create a large Object from small Objects).
+		3. Behavioural: provide a solution for better interaction between objects and how to provide loose-coupling and flexibility to extend easily.
+
+*Singleton:- Single object created in entire project. (creational pattern). 
+	1. constructor private
+	2. variable private static 
+	3. static methods
+
+*Factory Design Pattern:- most use pattern, It provide best way to create new object. object created without exposing creation logic and reffer to new object using common interface. (creational pattern).
+	1. create common interface (os)
+	2. impliment in concrete class (android,windows,ios)
+	3. factory class who provide object for concrete class(Samsung,Nokia,Apple).
+
+*Abstract Factory Design Pattern: same as Factory Pattern and is considered as another layer of abstraction over factory pattern.
+
+*Builder Design Pattern: this pattern allows to solve some of the problems with factory design pattern when object contains alot of attributes. this pattern solve issue with large no. of optional parameters and inconsitent state by providing way to build object step-by-step and provide a method to return final object.
+
+*Prototype Design Pattern: it allow us to copy existing object rather than creating new object from scratch. because new object may be costly. this approch saves costly resources and time. especially when object creation is havey process. use clone to create new object. 
+	Exp: create new class for fetching network data. suppose it take 30 min to fetch data. every time we create object of this class it will fetch same data and take 30 mins. with the help of Prototype design pattern we can create clone of already created object then time and use of resources will be reduced.
+	1. create class and impliment cloneable marker interface.
+	2. create object.
+	3. call clone() with created object to create new object.
+
+*Proxy Design Pattern:- It let us use substitute object at place of original object.use for follwing things:-
+	1. Access Controll (which object can call original object)
+	2. Logging (which object have use original object)
+	3. Caching (store data to proxy object)
+	4. Lazy initialization (object not created until require)
+*Flyweight Design Pattern:- this pattern allows to fit more object in RAM by sharing common parts of state between multiple object.
+
+
+
+
+#Stream: Stream API is used to process collections of objects. A stream is a sequence of objects that supports various methods which can be pipelined to produce the desired result.
+
+#Type of stream:
+	1. Intermediate operation: transform stream into another stream. these operation are lazy. exp: filter, map, distinct, sorted, max, min, limit, skip etc.
+	2. Terminal operation: these operations produce a result. once terminal operation invoked stream can not be reused. etc: forEach, collect, reduce, anyMatch, findFirst, findAny
+
+	*How to Create Stream:
+		1. Stream<Object> emptyStream = Stream.empty(); //1
+			
+		2. String names[] = {"Ashu","sourabh","Ankit","Rahul"};
+		   Stream<String> convertedStream = Stream.of(names); //2
+
+		3. Stream<Object> streamBuilder = Stream.builder().build(); //3
+
+		4. IntStream annonimusArrayToStream = Arrays.stream(new int[] {1,2,3,4}); //4
+
+		5. Stream<Integer> collectionToStream = list1.stream(); //5 most imp use
+
+	* Looping: 
+		Stream.forEach(e->{
+			sysout(e);
+		});
+
+
+	* Stream mothods:
+		1. filter(): it uses predicate to check and return true false based on predicate.
+			List<String> names= List.of("Aman", "Shubham", "Ashu", "Rahul", "Ankit");
+			List<String> newNames= names.stream().filter(e->e.startWith("a")).collect(Collectors.toList());
+
+		2. map(): it uses function to perform opration.
+			List<Integer> numbers = List.of(2,1,3,4,5);
+			List<Integer> numberSqure = numbers.stream().map(i->(i*i)).collect(Collectors.toList());
+
+			numberSqure.stream().forEach(e->{sysout(e)});
+			numberSqure.stream().forEach(System.out::println);
+
+		3.sort():
+			numbers.stream().sorted().forEach(System.out::println);
+
+		4.min():
+			Integer n = number.stream().min((x,y)-> x.compareTo(y)).get();
+
+		5.max():
+			Integer n = number.stream().max((x,y)-> x.compareTo(y)).get();
+
+	Exp:
+		1. find 1st element
+			myList.stream().findFirst().ifPresent(System.out::println);
+		2. count of element in stream
+			myList.stream().count();
+		3. max from stream
+			myList.stream().max(Integer::compare).get();
+		4. descending sort
+			myList.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
+		5. provide sum of odd no.
+			list.stream().filter(e -> (e % 2 != 0)).mapToInt(Integer::intValue).sum();
+		6. Sort Map
+			map.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(System.out::println);
+			map.entrySet().stream().sorted(Map.Entry.<Integer,String>comparingByValue().reversed()).forEach(System.out::println);
+
+		7. get 2nd highest:
+			Integer secondHighest = myList.stream().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+		8. get count of each char in string:
+			Map<String, Long> map = Arrays.stream(s.split("")).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
+		9. Most frequent element in an array
+			Entry<Integer, Long> n = Arrays.stream(arr).boxed().collect(Collectors.groupingBy(i->i,Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).get();
+		10. get 2nd frequent char in string:
+			Entry<String, Long> map = Arrays.stream(s.split("")).collect(Collectors.groupingBy(i -> i, Collectors.counting())).entrySet().stream()
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).skip(1).findFirst().get();
+		11. get by department:
+			Map<Object, List<Emp>> deptList = empList.stream().collect(Collectors.groupingBy(e->e.getDeptId()));
+		12. highest salary by department:
+			Map<Object, Emp> highestSalaryDeptList = empList.stream().collect(Collectors.groupingBy(e->e.getDeptId(),Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparingInt(e->e.getSalary())), Optional::get)));
+		13. Descending sort by salary
+			List<Emp> sortDesclist = empList.stream().sorted(Comparator.comparing(Emp::getSalary).reversed()).collect(Collectors.toList());
+		14. get 2nd highest emp List
+			Emp secondhighest = empList.stream().sorted(Comparator.comparing(Emp::getSalary).reversed()).skip(1).findFirst().get();
+		15. add 2000 in salary on specific condition
+			List<Emp> filterList = empList.stream().filter(e->e.getSalary() >= 5000).map(e->new Emp(e.getId(),e.getMngId(),e.getSalary()+200)).collect(Collectors.toList());
+		16. merge 2 list and sort:
+			Stream.of(Arrays.asList(4,2,7,1), Arrays.asList(8,3,9,5)).flatMap(List::stream).sorted().forEach(System.out::println);
+		17. Intersection of 2 arrays:(Matching Elements)
+			Arrays.stream(a).filter(x->Arrays.stream(b).anyMatch(y->y==x)).distinct().forEach(System.out::println);
+		18. update salary and store all obj in list:
+			List<Emp> updateSalary = empList.stream().map(e->{
+	    		if(e.getDeptId() == 1) {
+	    			e.setSalary(e.getSalary()*2);
+	    		}
+				return e;
+	    	}).collect(Collectors.toList());
+	    
+	 	19. Biggest string 
+	 		list.stream().max(Comparator.comparingInt(String::length)).get();
+	 	20. Get non repeative char from string and return as string:
+	 		Arrays.stream(s.split("")).collect(Collectors.groupingBy(i->i, Collectors.counting())).entrySet().stream().filter(i->i.getValue()==1).map(i->i.getKey()).collect(Collectors.joining());
+		21. filter red vehicle and sort by size:
+			vehicles.stream().filter(v-> v.getColor().equals("red")).sorted((v1,v2)->v1.getSize().compareTo(v2.getSize())).forEach(System.out::println);
+		22. First Non Repeative char:
+		 		 Optional<String> str = Arrays.stream(s.split("")).collect(Collectors.groupingBy(i->i,LinkedHashMap::new, Collectors.counting())).entrySet().stream().filter(i->i.getValue()==1).map(i->i.getKey()).findFirst();
+
+#Sequential stream vs Parallel stream: Sequential stream uses single thread to process the pipeline. Parallel stream leverage multi-core processors, which increases its performance. Using parallel streams, our code gets divide into multiple streams which can be executed parallelly on separate cores of the system and the final result is shown as the combination of all the individual core’s outcomes
+
+#Map vs flatMap: map() work on stream whereas flatmap in used to work on stream of stream.
+
+#Heap: store objects and use for dynamic allocation and deallocation
+#Stack: store local variable and order of method execution
+
+#How to handle Java Array Index Out of Bounds Exception: Using try catch.
+
+#Call functional Interface Runnable run method using lembda: 
+	public static void main(String[] args) {
+		Runnable r = () -> {
+			for (int i = 0; i <= 5; i++) {
+				System.out.println("Test: " + i);
+			}
+		};
+		Thread t = new Thread(r);
+		t.start();
+	}
+#Create Functional Interface Predicate:
+	Predicate<Integer> isEven = n -> n % 2 == 0;
+	public static int calculate(int value, Predicate<Integer> predicate) {
+		if (predicate.test(value)) {
+			return value * 2;
+		} else {
+			return value / 2;
+		}
+	}
+
+#SpringBootServletInitializer:  SpringBootServletInitializer is used to deploy Spring Boot applications as WARs to external servlet containers. SpringBootServletInitializer is class to run SpringApplication from a traditional WAR deployment. It binds Servlet, Filter and ServletContextInitializer beans from the application context to the server
+
+#Command Line Runner: It is used to execute the code after the Spring Boot application started.
+	1. Implements CommandLineRunner functional interface in main class.
+	2. Override run().
+
+#SOLID Principle:
+	S: SRP Single Responsiblity Principle: class should do 1 thing and should have only 1 reason to change.
+	O: OCP Open Closed Principle : class should be open for extension but closed for modification.
+	L: LSP Liskov Substitution Principle : child class must be substitutable for their parent class.
+	I: ISP Interface Segregation Principle: classes should not be forced to impliment a function they do not need.
+	D: DIP Dependency Inversion Principle: High level classes should not dependent on low level classes. both should depend upon abstraction.
+
+#Reflection API: It is use to examine or modify behavior of methods, classes, and interface at runtime. required classes are provided under java.lang.reflection package. Reflection gives information about class and methods to which obeject belongs.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+#Spring IQ
+# Singleton beans are not thread safe as thread safety depends only on the bean implementation itself.
+
+#Bean Life cycle:
+	1. Bean Instance creation based on defination.
+	2. Bean Initialization
+	3. Bean Ready to use
+	4. Removal from IOC Container.
+
+#Spring Security: It is separate module of spring fraimwork that focus on providing authentication and authorization methods in java applications. It takes care of common security vulnerabilities such as CSRF Attacks etc. 
+
+#Aspect-Oriented Programming (AOP): AOP is a programming paradigm whose main aim is to increase modularity by allowing the separation of cross-cutting concerns.
+#Cross-cutting concerns: Logging, Security, validation, caching, etc.
+
+#Aspect: A class that contains cross-cutting concerns, such as logging, security, transactions, caching, etc.
+#Advice: The code that runs at a particular point in the application. it is the method inside Aspect that excute when a specific join point is matched. exp: @Before, @After, @AfterReturing, @AfterThrowing @Around
+#Pointcut: A condition that selects JoinPoints. it tells where the advice should run.
+#JoinPoint: a point during the execution of a program, such as the execution of a method or the handling of an exception
+
+#Weaving: linking aspects with other application types or objects to create an advised object.
+
+#@PostConstruct: method with @PostConstruct get executed after spring bean is initialized. 
+
+#@PreDestroy: method with @PreDestroy runs only once, just before spring removes bean from application context.
+
+#<scope> in <dependency> in pom.xml: used to limit transitivity of dependency, and also affect the classpath used for various build task. there are 6 values that can be used:
+	1. compile: default scope, compile dependency available in all classpath of project.
+	2. provided: same as compile but indicate you expect JDK or container to provide dependency aat runtime.
+	3. runtime: it indicate the dependency is not required at compile time, but for execution. It is in runtime classpath not in compile time classpath.
+	4. test: it indicate that dependecy is not required for normal use of application, and is only available for test compilation and execution phases
+	5. system: same as provided expect you have to provide JAR which contains it explicitly. artifact is always available, not lookup for repository. 
+	6. import: it indicate that specified dependecies should be replaced with dependencies in pom's section.
+
+#Why use runnable instead of Thread in Java: Runnable make code more flexible as, if we extending a thread, then our code will only be in a thread whereas, in case of runnable, one can pass it in various executor services or pass it to single-threaded evn.
+
+#How to avoid deadlock: deadlock happens when A, b threads lock 2 objects OA,OB. thread A wants to lock object OB also and same for thread B also want to lock object OA. this satuation is called deadlock and both operations can not be completed.
+	ways to avoid:
+		* Avoid unnecessary Locks.
+		* Use Join(). 
+
+#Circular dependency: whe 2 or more beans depend on each other directly or indireclty. 
+	public A(B b) {
+        this.b = b;
+    }
+
+    public B(A a) {
+        this.a = a;
+    }
+
+    this will throw exception Caused by: org.springframework.beans.factory.BeanCurrentlyInCreationException: Requested bean is currently in creation because beans are not initilized and other bean try to use it. to fix this use @Lazy injection or @Autowired setter injection
+        public A(@Lazy B b) { this.b = b; }
+	or 
+		@Autowired
+    	public void setB(B b) { this.b = b; }
+
+
+#Why maven based project: Maven is a build tool that helps to download right dependencies or jar files directly from internet for specific version required for project.
+
+#JWT: Json Web Token. consist 3 parts:
+	1. Header: algo + type of token
+	2. Payload: name of user + subject + expiry time of token
+	3. Verify Signature: base64UrlEncode of Header and Payload + 256 bit encryption key.
+
+#Create and validate Jwt Token: 
+	#Creation of Jwt token for 10 hours:
+		After implimenting security create JwtUtil class under that we have generateToken(String username) method under that we call createToken(Map<String,Object> claims, String username) inside this method we return
+			
+			Jwts.builder().setClaims(claims).setSubject(username).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)).signWith(SignatureAlgorithm.HS256, 256-bit-encryption-key).compact();
+
+	#Validation of token:
+		Create validateToken(String Token, UserDetails userDetails) inside that call isTokenExpired(token). in isTokenExpired(String token) call extractExpiration(token).before(new Date()); if isTokenExpired() return true means token is expired.
+
+
+
+#Object cloning: It is way to create excat copy of object. clone() is use to create copy of object, when clone() is called it create new instance of class of current object and  initilizes all fields with exect same contents. class must impliment Cloenable interface whose object clone we wanted to create otherwise throw CloneNotSupportedException.
+
+#Spring Security:
+#Authentication Request flow: 
+	client Request-> Filter(DeligatingFilterProxy)-> Authentication Manager->Provider Manager-> Authentication Provider-> UserDetailsService --
+																<-|				<-|						<-|									<-|
+	SecurityContextHolder.getContext().setAuthentication(auth)
+
+	*DeligatingFilterProxy: extract servlet request and convert to authentication object. authentication object contains username password as Principle object and credential object.
+
+	*Authentication Manager: takes authentication object as arg and calls authenticate(Authentication auth).
+
+	*Provider Manager: its calls support() to check which Authentication Provider is supported.
+
+	*Authentication Provider: In spring there are multiple Authentication Provider like authenticate based on token, based on username password, based on ldap server, based on outh2 etc.
+
+	*UserDetailsService: Authentication Provider invoke authenticate() but to authenticate a request Authentication Provider should have information about UserDetails object. UserDetailsService is use to load the user object from external resource like DB. if user object not available in DB then throw badCredentialExeception. If user object found then return back to Authentication Provider.
+
+#SecurityContext: this class stores currently authenticated user(principle). to get username or any other data about user must obtain SecurityContext.
+
+#SecurityContextHolder: it is helper class which provide access to security context. it uses ThreadLocal object to store security context, which means security context is always available to methods in same threads.
+
+#Spring Security OAuth2: Enable third party authentication.
+	Step 1. use cloud oauth2 dependency.
+	Step 2. use @EnableOAuth2Sso in main class.
+	Step 3. create appliaction.yml file and add these properties:
+			Security:
+				oauth2:
+					client:
+						clientId: get from github while creting app
+						clientSecret: get from github while creting app
+						accessTokenUri: https://github.com/login/oauth/access_token
+						userAuthorizationUri: https://github.com/login/oauth/authorize
+						clientAuthenticationScheme: form
+					resource:
+						user-info-uri: https://api.github.com/user
+						prefer-token-info: false
+
+#ConcurrentModificationException: occours when perform add and removal on list based on condition in iteration.
+	Way to avaoid:
+	* In multithreaded env:
+		1. convert list in array and iterate on array
+		2. lock the list in synchronized  block
+		3. use CopyOnWriteArrayList  to avoid exeception.
+
+	* In singlethreaded env:
+		1. use iterator remove()
+
+#API gateway locate between the client apps and the internal microservices. It is working as a reverse proxy and routing requests from clients to backend services. It is also provide cross-cutting concerns like authentication, SSL termination, and cache.
+
+#@MappedSuperclass:this annotation used on common entity class. in this class we put common fields for entities like createdAt, updatedAt etc. and extends in other Entity class.
+--------------------------------------------
+#Highest salary from each department:
+	SELECT DeptID, EmpName, Salary FROM EmpDetails WHERE (DeptID,Salary) IN (SELECT DeptID, MAX(Salary) FROM EmpDetails GROUP BY DeptID).
+
+#2nd Highest salary: 
+	SELECT MAX(salary) AS second_highest_salary FROM emp WHERE salary < (SELECT MAX(salary) FROM emp);
+#Nth Highest salary:
+	SELECT emp1.* FROM Employee emp1 WHERE 2-1 =(SELECT COUNT(DISTINCT emp2.salary) FROM employee emp2 WHERE emp2.salary>emp1.salary)
+
+#Select matching records from both tables: 
+	SELECT EMPLOYEE.*, SALARY.SALARY FROM EMPLOYEE INNER JOIN SALARY ON EMPLOYEE.EMPID = SALARY.EMPID
+
+
+

@@ -1,0 +1,147 @@
+Collections:-
+**(link is use when insertion order is imp and tree is use when sorting is imp)
+
+# List:- duplicates allowed, insertion order preserved.index play importent role.
+	1. ArrayList:- uses dynamic array, best for storing and accesing, hetrogenious objects allowed,null insertion is possible,default size 10.
+		formula:- new size = (currentsize * 3/2)+1;
+		
+	2. LinkedList:- uses doubly linkedlist, best for manipulation in middle elements.
+	
+	3. Vector:- Same as ArrayList, only diffrence is vector is syncronized.
+	
+	4. Stack:- LIFO
+
+# Set:- Duplicates not allowed, insertion order not preserved, underlying DS is HashMap(HashMap as key map so if value match using isPresent() if present then return false), all collection methods and new method provided by Set.
+
+	1. HashSet:- Duplicates not allowed when try to insert return false, insertion order not preserved uses Hashing to store object, not thread safe. underlying Ds is Hashtable, Hetrogenious and multiple null allowed but when print contents then 1 null will print, default size is 16 and Fill Ratio is 0.75 (after use of 75% new HashSet will be created). as Hashmap is used so objecct is passed as key and Present is passed as value to avoid duplicate entry.
+	
+	2. LinkedHashSet:- Duplicates not allowed, maintain insertion order, underlying DS is HashTable + LL.
+	
+	3.SortedSet:- Duplicates not allowed, all object are inserted according to some sorting order(ASC/DESC).
+		3.1 TreeSet:- implimentation of sortedSet, underlying DS is BalanceTree, no Hetrogenious object allowed, only one null object allowed.
+		
+	4.NavigableSet:- It contains methods for navigation purpose.
+
+#Queue:- before processing object manage in queue so that order is maintained.
+	1.Priority Queue:-
+	
+	2.Blocking Queue:-
+
+#Map:- Store object in key value pair(entry),duplicate key not allowed value can be duplicated.
+	1. HashMap:- Store object in key value pair, insertion order not maintained, allow one null key and multiple values, store objects in bucket in form of Hashcode, uses Hashtable as DS, not Syncronized, JVM uses equals() to check duplicate keys, default size is 16 and Fill Ratio is 0.75. best for search operation
+	
+	2. LinkedHashMap:- Same as Hashmap expect insertion order maintained, uses Hashtable + LinkedList as DS.
+	
+	3. SortedMap:- All object are inserted according to some sorting order.
+		3.1 TreeMap:-underlyin DS in Red-Black Tree, implimentation on SortedMap,If follow default natural sorting order then key should be homoginious and comparable otherwise key can be hetrogenious, null key not allowed but value can be null.
+		
+	4. HashTable:- underlying DS is hashtable, null not allowed, insertion order not preserved, object insertion based on hashcode of key, syncronized.
+	
+	5. IdentityHashMap:- Same as HashMap expect JVM use == to identify duplicate key.
+	
+	6.WeakHashMap:- Same as HashMap expect JVM call GC even if object associated with weakHashMap.On object associated with HashMap JVM can not call GC.
+
+#Iterate Map:
+	map.forEach((k,v)->{
+		System.out.println("key:"+ k + " Value:"+ v.substring(0,1).toUpperCase()+v.substring(1));
+	});
+
+# Why null not allowed to HashTable:- in order to successfully store and retrieve objects from a HashTable, the objects used as keys must implement the hashCode method and the equals method. Since null is not an object, it can’t implement these methods. HashMap is an advanced version and improvement on the Hashtable. HashMap was created later. In Hashmap for Null value Hashcode will be created automatically that store null at zeroth index.
+
+#Internal working of HashMap:- HashMap contains an array on node. first we calculate hashCode of the key and behalf of that we will store that node in HashTable for this we need to override hashCode() and equals(). hashCode can be same for multiple key so we store hashcode in bucket which will be stored in HashTable. bucket is use to resolve the collision.
+
+				  4		5		6     7     8    9 
+				 ____  ____	 ____  ____  ____  ____  
+				|____||____||____||____||____||____| <- HashTable
+					     |
+					   ____
+					  |____| node1 
+					  |____| node2 <- Bucket
+					  |____| node3 
+					  |____| node4   
+	A node contains:
+ 		int hash (3)
+		K key (1)
+		V value ('a')
+		Node next
+
+	Process:
+	*Hashing: Hashing is a process of converting an object into integer form by using the method hashCode(). It’s necessary to write the hashCode() method properly for better performance of HashMap. Here I am taking the key of my class so that I can override the hashCode() method to show different scenarios. My Key class is where hashCode() and eqals() is being override:
+	class Key{
+		  String key;
+		  Key(String key)
+		  {
+		    this.key = key;
+		  }
+		  
+		  @Override
+		  public int hashCode() 
+		  {
+		     return (int)key.charAt(0); //ascii value of 1st char will be hashcode 
+		  }
+
+		  @Override
+		  public boolean equals(Object obj)
+		  {
+		    return key.equals((String)obj);
+		  }
+		}
+	
+	*Buckets: A bucket is an element of the HashMap array. It is used to store nodes. Two or more nodes can have the same bucket. 
+	*if hashcode() not overrided then it will return memory address of object.
+	*if we not overrided equals() then it will create different entries for same object as hashcode() will return memory address of object and adress will be different for all the object.
+
+# Comprable:- Comprable use natural sorting order and have compareTo() method, it required single parameter for sorting. available in java.lang : 					Collections.sort(List).
+
+# Comparator:- Comparator uses for customized sorting order, It have compare() method, it required 2 parameters for sorting available in java.util:					Collections.sort(List, Comparator)
+#How to create Comparable and Comparator for Object:
+	Comparable:
+		1. Implements Comparable in Emp Class. : class Emp implements Comparable<Emp>(){}
+		2. Override compareTo(). : compareTo(Emp e){ return this.empId - e.empId; }    <--- sort by empId
+		3. call Collections.sort(list);  <-- from where we want to sort
+
+	Comparator:
+		1. Create new Class and implements Comparator. : class IdComparator implements Comparator<Emp>(){}
+		2. override compare(). : compare(Emp e1, Emp e2){ return e1.getEmpId() - e2.getEmpId(); }
+		3. call Collections.sort(list, new IdComparator());
+
+#HashMap Vs Hashtable: both are same only differets are HashMap is not Thread safe, methods are not synchronized, 1 null key and multiple null values are allowed but Hashtable is Thread safe, all methods are synchronized, null key and value both not allowed. if try to insert NullPointer Exception thrown.
+
+#Synchronized version of HashMap: 
+	HashMap m = new HashMap();
+	Map m1 = Collections.synchronizedMap(m);  <-- m1 is synchronized HashMap
+	List<String> list = Collections.synchronizedList(list);
+	Set<String> set = Collections.synchronizedset(set);
+
+#Hashmap Improvement in Java 8: Java 7 after calculating hash from hash function if more then one element has same hash than they are searched by linear search so it's complexity is O(n). In Java 8 that search is performed by binary search so the complexity will become log(n). and to avaoid colision after certain thrashold bucket(linked list) is changed to balanceTree.
+
+#CopyOnWriteArrayList : Thread safe version of arraylist, for every update operation a seperate cloned object will be created on that copy update will be perform. after updation original and cloned object will be synced by jvm automatically. worst recommondation when large no. of update operation performed.
+
+#ConcurrentHashMap vs Hashtable: both Thread safe. in Hashtable complete map object will be locked with thread, but in ConcurrentHashMap only specific bucket will be locked(segement lock / bucket level lock). with ConcurrentHashMap no lock required for read operations.
+
+#The HashMap is non-thread-safe and can not be used in a Concurrent multi-threaded environment. Comparatively, ConcurrentHashMap is a thread-safe and specially designed for use in multi-threaded and Concurrent environment.
+
+#ConcurrentModificationException: occours when perform add and removal on list based on condition in iteration.
+	Way to avaoid:
+	* In multithreaded env:
+		1. convert list in array and iterate on array
+		2. lock the list in synchronized  block
+		3. use CopyOnWriteArrayList  to avoid exeception.
+
+	* In singlethreaded env:
+		1. use iterator remove()
+
+#Fail fast and fail save iterator: fail fast iterator are those when any add remove operation is perform at the time of iteration it will throw ConcurrentModificationException because it work on same collection. whereas fail safe iterator work on copy of collection so it will not throw ConcurrentModificationException.
+
+#Iterator vs ListIterator: Iterator can we used with any collection object whereas ListIterator can be used with List implimented object. Iterator can move in forword direction whereas ListIterator can traverse in both directions. Iterator has hasNext(),next(),remove() methods whereas ListIterator has hasNext(), next(), previous(), hasPrevious(), remove(), add() methods. with Iterator we can read, remove the elements whereas with ListIterator we can read, remove,replace and add the elements.
+
+#ReadOnly ArrayList:
+	list<String> l = new ArrayList();
+	l.add("test");
+	List<String> readOnlyList = Collections.unmodifiableList(l);
+	Set<String> readOnlySet = Collections.unmodifiableSet(s);
+	Hashmap<String,String> readOnlyMap = Collections.unmodifiableMap(m);
+
+	*if we try to add the throw UnsupportedOperationException
+
+#If class not override hashcode() then it will return memory address of object. if we not override equals() then it will create different entries for same object as hashcode() will return memory address of object and address will be different for all objects. 

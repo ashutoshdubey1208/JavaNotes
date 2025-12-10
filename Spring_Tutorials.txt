@@ -1,0 +1,350 @@
+#Spring Boot: IT is a dependency Injection fraimwork to make java application loosly coupled.It provide IOC Container for Dependency Injection. use for easy development of JavaEE.
+
+#Spring Boot features: 
+	Auto Configrution
+	starter Dependency
+	Embedded servers
+	Metrix and health checks
+
+#Why Springboot over Spring: 
+	1. Dependency Resolution / Avoid version conflicts
+	2. Avoid Additional configuration
+	3. Embedded Tomcat, Jetty
+	4. Provide production ready features like metrics, health checks.
+#Spring Boot Annotations: 
+	@SpringBootApplication: It is combination of 3 Annotations:
+		1. @Configuration: indicates that the class has @Bean definition methods.
+		2. @ComponentScan: Scan all the beans and packages declaration when appliaction initilizes.
+		3. @EnableAutoConfiguration: enables Spring Boot to auto-configure the application context. Scan dependecny and load required jar.
+
+#@RestController vs @Controller: @RestController is combination of @Controller and @ResponseBody.It is use with Rest Apis, It convert response in to Json or XML.
+
+#@Configuration vs @Component: both annotation is use to register bean to application context.@Configuration tells that class may have multiple beans.
+ 
+#@Primary vs @Qualifier:- @Qualifier annotation is used to resolve ambiguity when multiple beans of the same type exist, whereas the @Primary annotation designates a default bean to be injected when no qualifier is specified
+
+#Jar available in spring-boot-starter-web dependency: It contains spring boot starter, Jackson, spring core, spring MVC, spring boot starter tomcat.
+
+#How Spring boot run() work internally:
+	1. Create Application Context
+	2. Register Bean in to Context
+	3. start embedded tomcat server to run the jar.
+	 
+#@Bean can always be used, but it's more verbose. @Component is compatible with Spring's auto-detection, but @Bean requires manual class instantiation. Using @Bean, decouples the instantiation of the bean from its class definition. This is why we can use it to make third-party classes into Spring beans.
+
+#Spring Beans: Beans are object that is initiated, assembled and managed by Spring IOC. Beans are objects that forms backbone of Spring Boot Application. 
+	Element/Tag defined in spring bean configration file. 
+	Objects that are managed by spring appliaction container.
+	we use beans to create instances of classes through spring application.
+	Mapping of appliaction classes with unique identifiers that spring can use.
+
+	Exp. <bean id="fruit" class="mypackage.Fruit.class"/> 
+	Class must have default no args constructor
+
+#Bean Scope(5): (2 springboot, 3 spring mvc )
+	Springboot:
+	*Singleton: Single instance per IOC container. (Default Scope) 
+				use for stateless beans
+	*Prototype: multiple instanes per IOC container. (created instances will not be managed by spring)
+				use for stateful beans
+	Spring MVC:
+	*Request: 1 instance per HTTP request.
+
+	*Session: 1 instance per HTTP Session.
+
+	*Global: 1 instance per global HTTP Session (use for port-let based appliaction). 
+
+#Dependency Injection: It is process to injecting dependent bean objects into targeted bean object. removing hard coded dependency and use object at run time. which makes program loosely coupled.
+
+#DI can be achived using 3 ways: 
+	1. Setter Injection: IOC Container will inject dependent bean object in to targeted bean by calling setter method. (@Autowire Setter)
+	2. Constructor Injection: dependent bean object injected in to targeted bean by calling targeted bean constructor. (@Autowire Constructor)
+	3. Field Injection: dependent bean object injected in to targeted bean object by x. (Direct @Autowire). Default
+
+#Reflection API: used to check and modify the behavior of the interfaces, classes, and methods at the runtime. 
+
+#@Autowire vs @Inject: @Inject and @Autowired both annotations are used for autowiring in your application. @Inject annotation is part of Java CDI which was introduced in Java 6, whereas @Autowire annotation is part of spring framework. Both annotations fulfill same purpose therefore, anything of these we can use in our application 
+
+#CDI (Contexts and Dependency Injection) is a standard dependency injection framework included in Java EE 6 and higher.
+
+#Autowire:
+	The Spring framework enables automatic dependency injection. by declaring all the bean dependencies in a Spring configuration file, Spring container can autowire relationships between collaborating beans. This is called Spring bean autowiring.
+
+	*Types:
+	1.byType: The byType mode injects the object dependency according to type. So property name and bean name can be different. It internally calls setter method.
+
+	2.byName: The byName mode injects the object dependency according to name of the bean. In such case, property name and bean name must be same. It internally calls setter method.
+
+	3. Constructor Type: The constructor mode injects the dependency by calling the constructor of the class. It calls the constructor having large number of parameters.
+
+	4.no Type: It is the default autowiring mode. It means no autowiring bydefault.
+
+	5. default Type: same as no.
+
+*Note: Explicit configration of autowiring overrides any type of autowiring.
+
+#IOC Container: it is the fraimwork for implimenting automatic dependency injection. It manage object creation and its lifecycle and also inject dependencies into classes.
+	1. to initiate application classes.
+	2. to configure the object.
+	3. to assemble dependency between objects.
+
+	#Types of IOC Container:
+	1. Bean Factory: It loads bean on demand. It is lightweight, It follows lazy loading approch. use for standalone applications. support singleton and prototype bean scopes only and anotations not supported. xml file use for configureation of bean autowiring.
+	2. Application Context: It is default IOC Container for Spring Boot. It loads all beans at the startup. It follows egar loading approch. use for integration of AOP, ORM and distributed Application. (Best) support all type of bean scopes and support annotation based configration of bean autowiring.
+
+#Dispatcher Servelet: It is the front controller that handle all incoming HTTP requests and send response back to client. The Spring Boot autoconfiguration registers and configures the DispatcherServlet automatically.
+
+#lazy initialization in spring: Use @Lazy in service class and where autowiring service.
+	    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+
+#Change server in spring boot application:
+	1. exclude tomcat from starter dependency.
+		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-web</artifactId>
+		  <exclusions>
+		    <exclusion>
+		      <groupId>org.springframework.boot</groupId>
+		      <artifactId>spring-boot-starter-tomcat</artifactId>
+		    </exclusion>
+		  </exclusions>
+		</dependency>
+	2. Add new server as a dependency
+		<dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-jetty</artifactId>
+		</dependency>
+
+#Profiling in Springboot: We need diffrent properties for different env. creating different properties for different env is called profiling. after creating multiple property files, use spring.profiles.active = dev then appliaction-dev.properties profile will be activated. we can pass multiple properties file name in spring.profiles.active. we can create beans based on active profile. use @Profile("test") in entity file so that entity will be created only file test profile is active, for other env we will get BeanCreationException.
+
+#How transaction is handled in spring boot: use @Transactional on the method and @EnableTransactionManagement on main class.
+
+#Cache In springboot:
+	1. use spring-boot-starter-cache dependency.
+	2. use @EnableCaching in main class.
+	3. use @cacheable on method you want to cache. whatever you are returing will be cached.
+	4. 1st time data will fetch from DB but from 2nd time it will return whatever we have in cache.
+	5. default type of caching is In-memory cache using concurrentHashMap.
+
+#Handle expection in Spring boot:
+	1.Create new CustomException class.
+	2.Create ExceptionResponse Class.
+	3.Create GlobalExceptionHandler class write method for each CustomException class.
+
+	Exp.
+	1.Custom Exception Handling: create custom exception class by extending RunTimeException class.
+		public class ResourceNotFound extends RunTimeException {  
+			private String message;
+			private HttpStatus status;
+		    public ResourceNotFound(String message) {  
+		    	super(message);
+		    	this.message = message;
+		    	this.status = HttpStatus.NOT_FOUND; 
+		    }  
+
+		    generate getters;
+		}
+
+	2. Create ErrorResponse Class 
+		public class ErrorResponse { 
+			private String message;
+			private HttpStatus status;
+			private LocalDateTime time;
+		    public ResourceNotFound(String message, HttpStatus status) {  
+		    	this.message = message;
+		    	this.status = status; 
+		    	this.time = LocalDateTime.now()
+		    }  
+		    generate getter and setter
+		} 
+
+	3..Create GlobalExceptionHandler mark with @RestControllerAdvice and mark method with @ExceptionHandler(CustomException.class)
+		@RestControllerAdvice
+		public class ResourceNotFound {  
+			@ExceptionHandler(ResourceNotFound.class)
+			public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFound ex){
+				ErrorResponse response = new ErrorResponse(ex.getMessage(), ex.getStatus());
+				return new ResponseEntity<>(response, ex.getStatus());
+			}
+		}
+
+#Scheduler: 
+	1. use 	@Scheduled(fixedRate = 5000) on service method to run method every 5 sec. or use @Schedule(cron=0/5 * * * * *) on service method to run method every 5 sec daily.  
+	2.use @EnableScheduling in main class.
+
+#Spring Batch:
+	1. add spring batch dependency (spring-boot-starter-batch and spring-boot-starter-batch-test).
+	2. create BatchConfig class and use @Configuration and @EnableBatchProcessing under config package.
+	3. Autowire JobBuilderFactory and StepBuilderFactory.
+	4. Create Job method:
+		@Bean
+		public Job testJob() {
+			return jobBuilderFactory.get("PrintJob").incrementer(new RunIdIncrementer()).start(testPrintStep()).build();
+		}
+	5. Create Step method:
+		@Bean
+		public Step testPrintStep() {
+			return stepBuilderFactory.get("PrintStep").<User, User>chunk(5).reader(printReader())
+					.processor(printProcessor()).writer(printWriter()).build();
+		}
+	6. Create bean for reader, processor and writer with same name as pass for reader(), processor(), writer().
+	7. Create Reader Class and implements ItemReader<User>, override read().
+		private ItemReader<User> delegate;
+		@Override
+		public User read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+			if (delegate == null) {
+				delegate = new IteratorItemReader<>(userRepo.findAll());
+			}
+			return delegate.read();
+		}
+	8. Create Proccessor Class and implements ItemProcessor<User, User>, override process().
+		@Override
+		public User process(User item) throws Exception {
+			return item;
+		}
+	9. Create Writer Class and implements ItemWriter<User>, override write method.
+		@Override
+		public void write(Chunk<? extends User> chunk) throws Exception {
+			System.out.println(chunk.toString());
+		}
+
+#Return JSON and XML response from 1 API: 
+		Step 1. use jackson-dataformat-xml, jaxb-runtime, jaxb-api dependencies.
+		Step 2. use produces
+			@GetMapping(value = "/entityEmployee", produces = { MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE })
+        Step 3. pass HTTP Headers: 
+        	Accept = application/xml or text/xml
+
+#Microservice: 
+	1. Create Service Registry by adding Eureka server and spring web dependency. add @EnableEurekaServer in main class. add config 
+		server.port = 8761
+		spring.application.name = service-registry
+		eureka.instance.hostname = localhost
+		client.register-with-eurka = false
+		client.fetch.registry = false
+		client.serviceUrl.defaultZone = http://${eurka.instance.hostname}:${server.port}/eureka/
+
+	2. Create Discovery client by adding spring web, Eureka discovery client, config client(spring cloud config), zipkin, spring boot actuator dependency. add @EnableDiscoveryClient in main class. add config
+		server.port = 8081
+		spring.application.name = department-service
+		eurka.client.serviceUrl.defaultZone = http://localhost:8761/eureka/ adding 
+
+		for zipkin 
+		management.tracing.sampling.probability = 1.0
+
+	3. Create Config Server by adiing config server(spring cloud config) dependency. add @EnableConfigServer  in main class. add config
+		server.port =8088
+		spring.profiles.active =native   <- to search in application, not on git
+
+		create config package in resource. add config files for all services with same name as service. cut all property from service property file expect appliaction.name and paste it in service config file in config server and add 
+			spring.config.import = "optional:configserver:http://localhost:8088" 
+		add config client(spring cloud config) dependecy in all services.
+
+	4. Create Zipkin server, search zipkin server using docker install docker after that run 
+			docker run -d -p 9411:9411 openzipkin/zipkin
+		add zipkin dependency in service. 
+
+	5. Create API Getway by adding gateway(spring cloud routing), actuator, config client, zipkin, eurka discovery client dependency. add @EnableDiscoveryClient in main class, add config
+		server.port = 8060
+		spring.application.name = api-gateway
+		spring.cloud.gatway.routes[0].id = employee-service
+		spring.cloud.gatway.routes[0].uri = lb://employee-service
+		spring.cloud.gatway.routes[0].predicates.path = /employee/**
+		spring.cloud.gatway.routes[1].id = department-service
+		spring.cloud.gatway.routes[2].uri = lb://department-service
+		spring.cloud.gatway.routes[3].predicates.path = /department/**
+
+		eureka.client.serviceUrl.defaultZone = http://localhost:8761/eureka/
+		management.tracing.sampling.probability = 1.0
+
+		for API Gateway
+
+	** RestTemplete is depricated in springboot 3 so we use HttpExchange.
+
+#Circuit Breaker: manage availability of microservices. resilience4j use as circuit breaker. create fallback method if service is down. to check service availability we sent request if thrashold excided then service is down. 
+	Annotations:
+		@CircuitBreaker(name = "CircuitBreakerService")
+		@Retry(name = "retryApi", fallbackMethod = "fallbackAfterRetry")
+		@TimeLimiter(name = "timeLimiterApi"): set threshold time value for async calls made. 
+		@Bulkhead(name="bulkheadApi"): max no. of concurrent calls.
+		@RateLimiter(name = "rateLimiterApi"): limit the rate of requests to resource.
+
+
+#@Lookup annotation is use to Inject Prototype Bean In Singleton bean and it act like prototype bean. If we do @Autowired then it will act as singleton bean.
+	1. use @Scope("prototype") in class for which we wanted to change scope.
+	2. use @Lookup for autowiring so that bean act as prototype bean.
+
+#Actuator: It is use to manage and monitor your application by using HTTP endpoints or with JMX. Auditing, health, and metrics gathering can also be automatically applied to your application. with Actuator we can see health, metrics, info, dump, env, etc.
+	1. Add Actuator starter dependency in pom.
+	2. Add required endpoints in application.property.
+		management.endpoints.web.exposure.include=*
+		management.endpoints.health.show-details=always
+
+
+#Fallback Pattern: It helps to maintain stability and availability of microservices-based appliacation when failure occouers or when a service is down.
+	We hava circuit breaker to check whether application is up or not. circuit breaker uses threshold to get the states. circuit breaker have 3 states:
+		1. closed: failure rate is below threshold means service is up and running.
+		2. open: failure rate is above threshold means service failure. 
+		3. half open: after some time failure service move to half open and send some request to check if server is up or not. if failure is below threshold then service will be move to closed state.
+	
+	*Resilience is use as circuit breaker
+	1. Add Acuator, starter-aop and resilience4j-spring-boot2 dependency.
+	2. use @CircuitBreaker(name = "userService", fallbackMethod = "getAllProducts")
+	3. create fallback method getAllProducts() with same return type.
+	4. add config to application.property file
+		resilience4j.circuitbreaker.instances.userService.registerHealthIndicator = true 		
+		resilience4j.circuitbreaker.instances.userService.eventConsumeBufferSize = 10
+		resilience4j.circuitbreaker.instances.userService.failureRateThreshold = 50
+		resilience4j.circuitbreaker.instances.userService.automaticTransactionFromOpenToHalfOpenEnabled = true
+		resilience4j.circuitbreaker.instances.userService.waitDurationInOpenState = 5s
+		resilience4j.circuitbreaker.instances.userService.permittedNumberOfCallsInHalfOpenState = 3
+		resilience4j.circuitbreaker.instances.userService.slidingWindowSize = 10
+		resilience4j.circuitbreaker.instances.userService.slidigWindowType = COUNT_BASED
+
+#State of Entity instance:
+	1. Transient: newly created object. never stored in database.
+	2. Persistent: any changes in object will be automaticaly saved in database.
+	3. Detached: after fetching from db any changes will not automatically store in db. 
+	4. Removed: Object deleted from db.
+
+#doReturn vs thenReturn: in thenReturn type checking happen so if returning different type compile time exception occurs whereas in doReturn no type checking happens so it throw exception at run time.
+
+#spy vs mock: use @Mock when you want to just test the functionality externally without actually calling that method. whereas use @Spy when you want to test the functionality externally + internally with the very method being called.
+
+#Microservices Design Pattern:
+	1.Aggregator: A service that receives a request, then makes requests of multiple services, combines the results and responds to the initiating request.
+	2.API Gateway: API Gateway act as entry point to forword requests to appropriate microservices.
+	3.Chain of Responsibility: produce single output which is combination of multiple chained outputs.
+	4.Asynchronus Messaging: All services can communicate to each other but they do not have to communicate with each other sequentially.
+	5.Database: each service can have specific database for themself or can you shared database by multiple services.
+	6.Saga: Manages transactions across multiple services.
+	
+	Circuit breaker:
+	
+#Inter Service Communication: service communicate in 2 manner:
+	1. Sync: using Rest or GRPC. RestTemplete or webclient
+	2. Async: using message broker like rabbitmq, kafka.
+
+#How to pass headers in RestTemplate:
+	RestTemplate restTemplate = new RestTemplate();
+	HttpHeaders headers = new HttpHeaders();
+	headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+	HttpEntity<String> httpEntity = new HttpEntity<>("some body", headers);
+	restTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class);
+
+#Ways to make http calls in microservices: How microservice communicate to each other:
+	1. RestTemplate
+	2. HttpExchange
+	3. Feign client
+
+#Distributed Transactions: a set of operations on data that is performed across two or more data microservices. Saga design pattern use. 
+
+#Criteria API is suitable for cases where you need to dynamically construct queries based on runtime conditions, such as user inputs or application logic.
+#Criteria vs Specification: Criteria API is a core feature of JPA for building dynamic queries programmatically, while specifications are a higher-level pattern for encapsulating query criteria into reusable components. Both mechanisms are useful for dynamic query generation in JPA applications, and the choice between them depends on factors such as the complexity of the queries, the level of reusability required, and personal preference or team conventions.
+
+
+
+
+
+

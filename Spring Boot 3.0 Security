@@ -1,0 +1,265 @@
+#JWT Token is combination of 3 things: 
+	1. Header: combination of algorithm and type of token. algo:HS256, typ:JWT 
+	2. Payload: contains username, token exp time. sub:1234567890, name: John, iat:1516239022
+	3. Verify Signature: contains how you are encripting the token(encoded header,payload, 256 bit secret). HMACSHA256(base64UrlEncode(header)+"."+base64UrlEncode(payload),your 256-bit-secret)
+
+#Spring Boot 3.0 Security: WebSecurityConfigureAdapter is now no longer supported by spring security 3.0. WebSecurityConfigureAdapter is depricated in 2.7.x
+SecurityFilterChain will be overridden insted of configure().
+
+Step 1: use spring-boot-starter-security dependency in project.
+
+Step 2: if wanted hard code username password define it in application.property file.(for testing only)
+		spring.security.user.name = Ashu 
+		spring.security.user.password = Pwd01
+
+*For InMemory mulitple user with differenct level of Auth:
+Step 1: use spring-boot-starter-security dependency in project and Create new class SecurityConfig under config package and use @Configuration annotation.		
+Step 2: Create bean of UserDetailsService
+		@Bean
+		public UserDetailsService userDetailsService() {
+			UserDetails user = User.builder().username("Ashu").password(passwordEncoder().encode("123456789"))
+					.roles("USER").build();
+			
+			UserDetails admin = User.builder().username("Admin").password(passwordEncoder().encode("123456789"))
+					.roles("ADMIN").build();
+			return new InMemoryUserDetailsManager(user,admin);
+		}
+Step 3: Create bean of PasswordEncoder
+		@Bean
+		public PasswordEncoder passwordEncoder() {
+			return new BCryptPasswordEncoder();
+		}
+
+#JWT Auth with DB:
+Step1 : use spring-boot-starter-security, jjwt-api, jjwt-impl, jjwt-jackson, dependency in project.
+
+Step2 : Create UserInfo class for table and impliments UserDetails and override methods.
+
+Step3: Create CustomUserDetailsService class with @Service and impliments UserDetailsService and override methods.
+		@Override
+		public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+			return userRepo.findByEmail(username).orElseThrow(()->new RuntimeException("User not found"));
+		}
+
+Step4 : Add Bean in SecurityConfig.
+		@Bean
+		public DaoAuthenticationProvider daoAuthenticationProvider() {
+			DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+			daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+			daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+			return daoAuthenticationProvider;
+		}
+
+Step5 : create add-user endpoint.
+
+Step6 : Create new Class JwtAthenticationEntryPoint with @Component and impliments AuthenticationEntryPoint and override commence().
+		@Override
+		public void commence(HttpServletRequest request, HttpServletResponse response,
+				AuthenticationException authException) throws IOException, ServletException {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			PrintWriter writer = response.getWriter();
+			writer.print("Access Denied... " + authException.getMessage());
+		}
+
+Step7 : Create JwtHelper class with @Component and write all the methods which requires.
+		@Component
+public class JwtHelper {
+	// requirement :
+	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+
+	// public static final long JWT_TOKEN_VALIDITY = 60;
+	private String secret = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
+
+	// retrieve username from jwt token
+	public String getUsernameFromToken(String token) {
+		return getClaimFromToken(token, Claims::getSubject);
+	}
+
+	// retrieve expiration date from jwt token
+	public Date getExpirationDateFromToken(String token) {
+		return getClaimFromToken(token, Claims::getExpiration);
+	}
+
+	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = getAllClaimsFromToken(token);
+		return claimsResolver.apply(claims);
+	}
+
+	// for retrieveing any information from token we will need the secret key
+	private Claims getAllClaimsFromToken(String token) {
+		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+	}
+
+	// check if the token has expired
+	private Boolean isTokenExpired(String token) {
+		final Date expiration = getExpirationDateFromToken(token);
+		return expiration.before(new Date());
+	}
+
+	// generate token for user
+	public String generateToken(UserDetails userDetails) {
+		Map<String, Object> claims = new HashMap<>();
+		return doGenerateToken(claims, userDetails.getUsername());
+	}
+
+	// while creating the token -
+	// 1. Define claims of the token, like Issuer, Expiration, Subject, and the ID
+	// 2. Sign the JWT using the HS512 algorithm and secret key.
+	// 3. According to JWS Compact
+	// Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
+	// compaction of the JWT to a URL-safe string
+	private String doGenerateToken(Map<String, Object> claims, String subject) {
+
+		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.signWith(SignatureAlgorithm.HS512, secret).compact();
+	}
+
+	// validate token
+	public Boolean validateToken(String token, UserDetails userDetails) {
+		final String username = getUsernameFromToken(token);
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+}
+
+
+Step8 : Create JwtAuthenticationFilter with @component and extends OncePerRequestFilter and override doFilterInternal().
+		@Component
+		public class JwtAuthenticationFilter extends OncePerRequestFilter {
+			private Logger logger = LoggerFactory.getLogger(OncePerRequestFilter.class);
+
+			@Autowired
+			private JwtHelper jwtHelper;
+
+			@Autowired
+			private UserDetailsService userDetailsService;
+
+			@Override
+			protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+					throws ServletException, IOException {
+				// Authorization
+
+				String requestHeader = request.getHeader("Authorization");
+				// Bearer 2352345235sdfrsfgsdfsdf
+				logger.info(" Header :  {}", requestHeader);
+				String username = null;
+				String token = null;
+				if (requestHeader != null && requestHeader.startsWith("Bearer")) {
+					token = requestHeader.substring(7);
+					try {
+						username = this.jwtHelper.getUsernameFromToken(token);
+					} catch (IllegalArgumentException e) {
+						logger.info("Illegal Argument while fetching the username !!");
+						e.printStackTrace();
+					} catch (ExpiredJwtException e) {
+						logger.info("Given jwt token is expired !!");
+						e.printStackTrace();
+					} catch (MalformedJwtException e) {
+						logger.info("Some changed has done in token !! Invalid Token");
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					logger.info("Invalid Header Value !! ");
+				}
+
+				//
+				if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+					// fetch user detail from username
+					UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+					Boolean validateToken = this.jwtHelper.validateToken(token, userDetails);
+					if (validateToken) {
+						// set the authentication
+						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+								userDetails, null, userDetails.getAuthorities());
+						authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					} else {
+						logger.info("Validation fails !!");
+					}
+				}
+				filterChain.doFilter(request, response);
+			}
+		}
+
+Step9 : Create SecurityConfig class with @Configuration.
+		@Configuration
+		public class SecurityConfig {
+
+			@Autowired
+			private JwtAuthenticationEntryPoint point;
+
+			@Autowired
+			private JwtAuthenticationFilter filter;
+
+			@Autowired
+			UserDetailsService userDetailsService;
+
+			@Bean
+			public PasswordEncoder passwordEncoder() {
+				return new BCryptPasswordEncoder();
+			}
+
+			@Bean
+			public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
+				return builder.getAuthenticationManager();
+			}
+
+			@Bean
+			public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+				http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
+						.authorizeHttpRequests(auth -> auth.requestMatchers("/users/**").authenticated()
+								.requestMatchers("/auth/login").permitAll().requestMatchers("/auth/add").permitAll().anyRequest().authenticated())
+						.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
+						.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+				http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+				return http.build();
+			}
+			
+			@Bean
+			public DaoAuthenticationProvider daoAuthenticationProvider() {
+				DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+				daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+				daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+				return daoAuthenticationProvider;
+			}
+		}
+
+Step10 : Create JwtRequest and JwtResponse class.
+		6.1 JwtRequest
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@ToString
+		public class JwtRequest {
+
+			private String email;
+			private String password;
+		}
+
+		6.2 JwtResponse
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		@NoArgsConstructor
+		@ToString
+		@Builder
+		public class JwtResponse {
+			private String jwtToken;
+			private String username;
+		}
+
+Link: 
+https://www.learncodewithdurgesh.com/blogs/jwt-authentication-with-spring-boot-31
+
+
+
+
+
+
+
+
