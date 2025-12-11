@@ -343,7 +343,12 @@
 #Criteria API is suitable for cases where you need to dynamically construct queries based on runtime conditions, such as user inputs or application logic.
 #Criteria vs Specification: Criteria API is a core feature of JPA for building dynamic queries programmatically, while specifications are a higher-level pattern for encapsulating query criteria into reusable components. Both mechanisms are useful for dynamic query generation in JPA applications, and the choice between them depends on factors such as the complexity of the queries, the level of reusability required, and personal preference or team conventions.
 
-
+Implement Security:
+	1. Add spring-boot-starter-security dependency.
+	2. Impliments UserDetailsService interface in my customClass to load the user from DB loadByUsername().
+	3. Created Bean of PasswordEncoder for encoding the password BCryptPasswordEncoder class.
+	4. extends WebSecurityConfigurerAdapter class in custom class to configure Spring Security. mark the custom class with @Configuration and @EnableWebSecurity.
+	5. In configure() add the public urls in antMatchers.
 
 
 
