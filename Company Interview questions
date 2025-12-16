@@ -11,14 +11,14 @@ Features of Java8
 different type of class loader
 call run method of runnable interface with functional programming
 jvm jdk jre.
-composite forain key
-function vs stored procedures
+composite foreign key: composite foreign key which is formed from 2 or more columns. orderId+ProductId
+function vs stored procedures: function return a value but procedures may or may not return. funtion can be used inside select but procedures can't be used in select. 
 notify vs wait
 @Restcontroller is in mvc
 collection vs collections
 call functional interface with lembda exp
-how StringBuffer is thread safe.
-rabitmq exchange(), messge read lost?
+how StringBuffer is thread safe.: methods are synchronized so only 1 thread can access.
+rabitmq exchange, messge read lost?: in Rabbitmq messages are send to exchange which routes them to queue. lost messages can be handled using manual acknowledgements (autoAck=false), so unprocessd messages are requeued.
 
 -----2nd-- given
 changes in hashmap after java 8

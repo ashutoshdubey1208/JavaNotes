@@ -117,7 +117,7 @@
 
 #Profiling in Springboot: We need diffrent properties for different env. creating different properties for different env is called profiling. after creating multiple property files, use spring.profiles.active = dev then appliaction-dev.properties profile will be activated. we can pass multiple properties file name in spring.profiles.active. we can create beans based on active profile. use @Profile("test") in entity file so that entity will be created only file test profile is active, for other env we will get BeanCreationException.
 
-#How transaction is handled in spring boot: use @Transactional on the method and @EnableTransactionManagement on main class.
+#How transaction is handled in spring boot: use @Transactional on the method and @EnableTransactionManagement on main class. Spring handles transaction using AOP proxies. when a method is annotated with @Transactional, spring create a proxy around that method. proxy start and manage transaction throgh PlateformTransactionManager. Transaction is bound to current thread using TransactionSynchronizationManager. if the method finish successfully, spring commits, if exception occours it rollback.  
 
 #Cache In springboot:
 	1. use spring-boot-starter-cache dependency.
@@ -167,6 +167,8 @@
 				return new ResponseEntity<>(response, ex.getStatus());
 			}
 		}
+
+#Cache data can be inconsistant with DB changes to handle this Spring provide @CachePut to update cache after DB changes and @CacheEvict to remove cache entries after deletion. in distributed caches we can use TTL to automatically expire stale data. 
 
 #Scheduler: 
 	1. use 	@Scheduled(fixedRate = 5000) on service method to run method every 5 sec. or use @Schedule(cron=0/5 * * * * *) on service method to run method every 5 sec daily.  

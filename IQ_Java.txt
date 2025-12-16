@@ -352,7 +352,9 @@ Functional Programming is stateless and provide parallel processing.
 		11. get by department:
 			Map<Object, List<Emp>> deptList = empList.stream().collect(Collectors.groupingBy(e->e.getDeptId()));
 		12. highest salary by department:
-			Map<Object, Emp> highestSalaryDeptList = empList.stream().collect(Collectors.groupingBy(e->e.getDeptId(),Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparingInt(e->e.getSalary())), Optional::get)));
+			Map<Object, Emp> highestSalaryDeptList = empList.stream().collect(Collectors.groupingBy(e->e.getDeptId(),Collectors.collectingAndThen(Collectors.maxBy(Comparator.comparingInt(e->e.getSalary())), Optional::get))); OR
+			empList.stream().collect(Collectors.groupingBy(i->i.getDept(), Collectors.maxBy(Comparator.comparing(Emp::getSalary)))).forEach((k,v)->System.out.println(k+v.orElse(null)));
+
 		13. Descending sort by salary
 			List<Emp> sortDesclist = empList.stream().sorted(Comparator.comparing(Emp::getSalary).reversed()).collect(Collectors.toList());
 		14. get 2nd highest emp List
@@ -377,8 +379,15 @@ Functional Programming is stateless and provide parallel processing.
 	 		Arrays.stream(s.split("")).collect(Collectors.groupingBy(i->i, Collectors.counting())).entrySet().stream().filter(i->i.getValue()==1).map(i->i.getKey()).collect(Collectors.joining());
 		21. filter red vehicle and sort by size:
 			vehicles.stream().filter(v-> v.getColor().equals("red")).sorted((v1,v2)->v1.getSize().compareTo(v2.getSize())).forEach(System.out::println);
-		22. First Non Repeative char:
-		 		 Optional<String> str = Arrays.stream(s.split("")).collect(Collectors.groupingBy(i->i,LinkedHashMap::new, Collectors.counting())).entrySet().stream().filter(i->i.getValue()==1).map(i->i.getKey()).findFirst();
+		22. First Repeative word: 
+				Set<String> set = new HashSet<>();
+				String FirstRepeativeStr = Arrays.Stream(s.split(" "")).filter(i-> !set.add(i)).findFirst().get();
+		23. First Non Repeative char:
+		 		 String FirstNonRepeativeStr = Arrays.stream(s.split("")).collect(Collectors.groupingBy(i->i,LinkedHashMap::new, Collectors.counting())).entrySet().stream().filter(i->i.getValue()==1).map(i->i.getKey()).findFirst().get();
+		24. Print matching(Intersection) from 2 arrays :
+			Set<Integer> set1 = Arrays.stream(arr1).boxed().collect(Collectors.toSet()); //get array in set for matching
+			Arrays.stream(arr2).filter(n-> set1.contains(n)).forEach(System.out::println);
+		25.
 
 #Sequential stream vs Parallel stream: Sequential stream uses single thread to process the pipeline. Parallel stream leverage multi-core processors, which increases its performance. Using parallel streams, our code gets divide into multiple streams which can be executed parallelly on separate cores of the system and the final result is shown as the combination of all the individual core’s outcomes
 
