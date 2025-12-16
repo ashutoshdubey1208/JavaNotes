@@ -1,0 +1,174 @@
+1.Filter Even Numbers from a List
+List numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+numbers.stream().filter(number -> number%2 == 0).toList()
+
+2.Find Maximum in a List
+Int maxNUmber = numbers.stream().max(Integer::compare).orElseThrow();
+
+3.Sort a List
+Numbers.stream().sorted(Comparator.reverseOrder()).toList();
+
+4.Count Strings with Specific Prefix
+Question: Count strings starting with a specific prefix, e.g., “A”.
+List<String> names = Arrays.asList("Alice", "Bob", "Annie", "Alex", "Charlie");
+names.stream().filter(name-> name.startWith(‘A’)).count()
+
+5.Find First Non-Repeated Character in a String
+String input = "swiss";
+Input.chars().mapToObj(c -> (Char) c).filter(c -> input.firstIndexOf(c) == input.lastIndexOf(c)).findFirst();
+
+6.Convert List of Strings to Uppercase
+List<String> names = Arrays.asList("java", "stream", "api");
+Names.stream().map(String::toUpperCase).toList();
+
+7.Sum of Numbers in a List
+Numbers.stream().mapToInt(Integer::intValue).sum();
+
+8.Check if Any String Matches a Condition
+Question: Check if any string in a list contains “API”.
+String matchString = input.stream().anyMatch(input -> input.contains(“API”));
+
+9.Find Duplicate Elements in a List
+Input.stream().filter(element -> Collections.frequency(input, element) > 1).collect(Collector.toSet())
+
+10.Group Strings by Length
+Question: Group a list of strings based on their length.
+List<String> words = Arrays.asList("Java", "Stream", "API", "Code", "Fun");
+Words.stream().collect(Collectors.groupingBy(String::length ))
+
+11.Concatenate Strings
+Question: Concatenate all strings in a list into a single string.
+Input.stream().reduce(“”,  (s1, s2)-> s1+””+s2).trim()
+
+12.Find the Longest String
+Question: Find the longest string in a list.
+input.stream().reduce( (word1, word2) -> word1.lenght() > word2.length() ? Word1: word2).orElse(null);
+
+13.Count Frequency of Characters in a String
+Question: Count the frequency of each character in a string
+Input.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(c -> c, Collect.counting()))
+
+14.Collect Map from List
+Question: Convert a list of strings into a map with the string as the key and its length as the value.
+List<String> words = Arrays.asList("Java", "Stream", "API");
+words.stream().collect(Collectors.groupingBy(word, word.length()))
+Words.stream().collect(Collectors.toMap(word, String::length))
+
+15.Partition Numbers into Even and Odd
+Question: Partition a list of numbers into even and odd.
+Map<Boolean, List<Integer>> partition = numbers.stream().collect(Collectors.partitioningBy(number -> number%2==0));
+
+16.Find Nth Largest Element in a List
+Question: Find the 3rd largest element in a list.
+numbers.stream().sorted(Comparator.reverseOrder()).skip(2).findFirst().orElseThrow();
+
+17.Find All Palindromic Strings
+Question: Find all strings that are palindromes in a list.
+List<String> words = Arrays.asList("radar", "level", "world", "java");
+Words.stream().filter(word -> word.equals(new StringBuilder(word).reverse().toString()).toList();
+
+18.Reverse Each String in a List
+List<String> words = Arrays.asList("Java", "Stream", "API");
+Words.stream().map(word -> new StringBuilder(word).reverse().toString()).toList();
+
+18.Filter and Convert Map to List
+Question: Given a map, filter entries with values greater than 10 and collect keys into a list.
+Map<String, Integer> map = Map.of("A", 5, "B", 15, "C", 10, "D", 20);
+Map.entrySet().stream().filter(entry -> entry.getValue() > 10).map(Map.Entry:: getKey).toList();
+
+19.Remove Duplicates Without Collectors
+Question: Remove duplicates from a list using distinct().
+List<Integer> numbers = Arrays.asList(1, 2, 3, 2, 4, 3, 5);
+numbers.stream().distinct().toList()
+
+20.Find the Most Frequent Character in a String
+Question: Find the most frequent character in a string.
+String input = "success";
+Input.char().mapToObj(c -> (char) c).collect(Collector.groupingBy(c, Collector.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry:: getKey).orElseThrow()
+
+21. Find Common Elements Between Two Lists
+Question: Find common elements between two lists.
+List<Integer> list1 = Arrays.asList(1, 2, 3, 4, 5);
+List<Integer> list2 = Arrays.asList(3, 4, 5, 6, 7);
+List1.stream().filter(list2:: contains).toList();
+
+22.Find the Sum of Squares of Even Numbers
+Question: Calculate the sum of squares of all even numbers in a list.
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+numbers.stream().filter(num -> num % 2 == 0).map(num -> num * num).mapToInt(Integer:: intValue).sum();
+
+23.Partition Strings by Palindrome
+Question: Partition strings into palindromes and non-palindromes.
+List<String> words = Arrays.asList("radar", "level", "java", "stream");
+Words.stream().collect(Collectors.paritioningBy(word -> word.equals(new StringBuilder(word).reverse().toString)));
+
+24.Find the Longest Word from a Sentence
+Question: Find the longest word in a sentence using Streams.
+String sentence = "Java Stream API is very powerful";
+Arrays.stream(Sentence.split(“ “)).stream().max(Comparator.comparingInt(String::lenqth)).orElse(null);
+
+25.Find the Word with Maximum Vowels
+Question: Find the word with the most vowels in a list.
+List<String> words = Arrays.asList("stream", "java", "programming", "awesome");
+words.stream().max(Comparator.comparingInt(word -> (int) word.char().filter(c -> “aeiou”.indexOf(c) != -1).count())).orElse(null);
+
+26.Compute Running Sum
+Question: Compute the running sum of a list of integers.
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+IntStream,range(0, numbers.size()).mapToObj(I -> numbers.sublist(0, I+1).stream().mapToInt(Integer::intValue).sum()).toList()
+
+27.Generate Fibonacci Sequence Using Streams
+Question: Generate the first N numbers in the Fibonacci sequence.
+Int numbers = 10
+Stream.itereate(new int[]={0,1}, arr -> new int[]{arr[1], arr[0] + arr[1]}).limit(n).map(arr -> arr[0]).toList();
+
+28.Find Employees with Highest Salary in Each Department
+Question: From a list of employees, find the highest-paid employee in each department.
+List<Employee> employees = Arrays.asList(
+    new Employee("Alice", "HR", 50000),
+    new Employee("Bob", "IT", 80000),
+    new Employee("Charlie", "IT", 75000),
+    new Employee("Dave", "HR", 60000),
+    new Employee("Eve", "Finance", 70000)
+);
+Employees.stream().collect(Collector.groupingBy(e -> e.department, Collector.CollectingAndThen(Collector.maxBy(Comparator.comparingDouble(e -> e.salary), optional::get)));
+
+29.Group Words by Length and Sort Them
+Question: Group words by their length and sort each group alphabetically.
+List<String> words = Arrays.asList("java", "stream", "api", "example", "code", "test");
+Words.stream().collect(Collector.groupingBy(String:: length, Collector.collectingAndThen(Collector.toList(), list -> list.stream().sorted().toList())));
+
+30.Calculate the Product of All Numbers
+Question: Calculate the product of all numbers in a list using reduce
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+Numbers.stream().reduce(1, (a,b)-> a*b);
+
+31.Find Non-Repeating Characters in a String
+String input = "swiss"; 
+Input.chars().mapToObj(c -> (char) c).filter(c -> input.stream().filter(ch -> c == ch).count ==1).toList();
+
+32.Count Frequency of Characters in a String
+Question: Count the frequency of each character in a string.
+String input = "swiss"; 
+Input.chars().mapToObj(c -> (char)c).collect(Collectors.groupingBy(c -> c, Collector.counting()))
+
+33.Find Duplicate Elements in a List
+Question: Identify all duplicate elements in a list.
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 2, 5, 3, 6);
+Numbers.stream().filter(number -> Collector.frequency(numbers, number)>1).collect(Collector.toSet());
+
+34. Convert Map to List of Key-Value Pairs
+Question: Convert a map to a list of “key=value” strings.
+Map<String, Integer> map = Map.of("A", 1, "B", 2, "C", 3);
+map.entrySet().stream().map(entry -> entry.getKey() + “=” + entry.getValue()).toList()
+
+35. Check if a List is Sorted
+Question: Verify if a list is sorted in ascending order.
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+Boolean isSoreted = IntStream.range(0, numbers.size()-1).allMatch(I -> numbers.get(i) <=numbers.get(I+1));
+
+36. Combine Two Lists into a Map
+Question: Combine two lists into a map where one is keys and the other values.
+List<String> keys = Arrays.asList("A", "B", "C");
+List<Integer> values = Arrays.asList(1, 2, 3);
+IntStream.range(0, keys,size).boxed().collect(Collectors.toMap(keys::get, values::get));
