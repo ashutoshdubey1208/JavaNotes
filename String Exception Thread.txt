@@ -112,7 +112,7 @@
 ** if we not wanted to execute finally block then use System.exist(0); 
 ** if try catch & finally all block return then finally block return will always gets highest priority.
 
-#Try with Resource: Automatic deallocation of resources. no need to write finally block, reduce complexity of code, readability increse. introduced in 1.7 version. we can use any no. of resourses but all resources should be seperated with semicolunm; whatever resourse are using that should be autocloeable Resource. 
+#Try with Resource: Automatic deallocation of resources. no need to write finally block, reduce complexity of code, readability increse. introduced in 1.7 version. we can use any no. of resourses but all resources should be seperated with semicolunm; whatever resourse are using that should be Autocloseable Resource. 
 		try(DbConnection db = new DbConnection()){
 			risky code;
 		}catch(Exeception e){

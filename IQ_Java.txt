@@ -577,5 +577,6 @@ Functional Programming is stateless and provide parallel processing.
 #Select matching records from both tables: 
 	SELECT EMPLOYEE.*, SALARY.SALARY FROM EMPLOYEE INNER JOIN SALARY ON EMPLOYEE.EMPID = SALARY.EMPID
 
-
+#Find missing Record while moving table:
+SELECT s.id, s.* FROM source_table s LEFT JOIN target_table t ON s.id = t.id WHERE t.id IS NULL;
 

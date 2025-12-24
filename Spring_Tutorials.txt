@@ -359,3 +359,8 @@ Implement Security:
 		2. use @Lazy in contructor based injection.
 		3. use setter based injection, its automatically lazy intialize. 
 
+#Challenges faced with JWT: I faced challenges in setting up Spring Security with JWT, mainly ensuring authentication was stateless and tokens were validated properly. I handled it by carefully configuring the authentication filter and debugging issues step by step, which helped me learn the framework deeply
+
+#Challenges faced with Kafka: One challenge I faced while implementing Kafka was handling message serialization and ensuring that consumers processed messages in the correct order. I also had to manage proper topic configuration and error handling. I overcame these by using the right serializers/deserializers, configuring partitions carefully. We use JsonSerializer/JsonDeserializer.
+
+#To make RESTful APIs efficient and scalable, I use strategies like caching frequently accessed data, implementing pagination for large responses, and optimizing database queries.
