@@ -29,6 +29,29 @@
         1. Event Driven Architecture with kafka: instead of making direct sychronous calls to each other they communicate asynchronously by producing and consuming.
         2. Saga Design Pattern: It is a sequence of local transactions where each transaction update local database and publish event to trigger next loacl transaction. if local transaction fails saga excute a series of compensating transcation to undo the preceding transcation.
 
+#MicroServices Design Pattern:
+    1. Saga Design Pattern: It handles transactions by splitting one large transaction in to multiple local transactions.each service complete its own operation and commits independently.if any step fails previous transaction are undone using compensatiing transaction.
+    2. Saga Orchestration: This pattern uses a central service called an orchestrator to control the entire workflow. It tells each microservice when to execute its task and what to do next. The orchestrator also handles failures and triggers compensating actions when needed.
+    3. Saga Choreography: In this pattern, there is no central orchestrator. Each service listens to events and reacts by performing its own actions. After completing its task, it publishes events for other services to act on, allowing the workflow to progress
+    4. API Gateway pattern: API Gateway act as single entry point for all client requests. it routes requests to appropriate microservices, handle cross-cutting concerns like Authentication, loggin, and also aggregate responses from multiple services.
+    5. Database-per-Service Pattern: Each Service have its own Database which is never shared between other services.
+    6. Circuit Breaker Pattern: It prevents repeatedly calling a failing service to avoid cascading failures. when errors exceed a threshold the circuit open and blocks request temporarily. After a while it half-opens to test service and if it works circuit closes. This imporoves system resilience and stability.
+    7.Event-Driven Architecture Pattern: Services communicate by publishing and listening to events instead of calling each other directly. when an event occurs interested service react asyncronously. this decouples service, improve scalibility and allow system to response quickly to changes.
+    8. CQRS Pattern (Command Query Responsibility Segregation): It separates write operations(Commands) from read operations(Queries) to optimize performance, scalibility and maintainability.
+
+        | Pattern              | Purpose                   |
+        | -------------------- | ------------------------- |
+        | Saga                 | Distributed transactions  |
+        | Saga Orchestration   | Central control           |
+        | Saga Choreography    | Event-based control       |
+        | API Gateway          | Single entry point        |
+        | Database per Service | Loose coupling            |
+        | Circuit Breaker      | Fault tolerance           |
+        | Event-driven         | Async communication       |
+        | CQRS                 | Performance & scalability |
+
+
+
 ###MicroService in Spring Boot:
 #Step 1 (First MicroService): Create Springboot project with these dependencies: Spring Web, Spring Data JPA, Lombok, MySql Driver. and impliment the service API.
 
