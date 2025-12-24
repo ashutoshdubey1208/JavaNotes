@@ -580,3 +580,50 @@ Primanry vs Unique
 how indexing works what is index
 2nd highest salary
 how to handle parralel 
+
+
+
+
+-------Programs-------------
+Implement Singleton class.
+Create immutable class.
+Create unmodifiable list.
+Override hashCode() and equals() correctly.
+Swap two variables without using a third variable.
+Remove duplicates from array/list.
+Remove duplicates from a table (SQL).
+Find second-highest salary (SQL/Array/Stream).
+Find Nth highest salary without using MAX or TOP.
+Find maximum/minimum employee salary from collection.
+Count employees per department (Stream/SQL).
+Print numbers 1–100 without using loops (recursion).
+Find first/second non-repeating character from a string.
+Find frequency of characters or words in a string/list.
+Reverse a string.
+Print duplicate elements in an array or list.
+Print numbers divisible by 5 from a list.
+Merge two arrays and sort.
+Find nearest element to a given number in an array.
+Find smallest/largest sum of elements in an array.
+Print numbers in sequence using multiple threads (thread synchronization).
+Implement Runnable interface using lambda.
+Thread creation (extend Thread vs ExecutorService).
+Use yield() in threads.
+Handle deadlocks / avoid deadlocks using tryLock().
+Recursive problems (e.g., print 1–100 without loops).
+Check impact of returning random numbers in hashCode().
+Implement programs using functional interfaces (Predicate, Function, Consumer, Supplier).\
+Stream operations:
+Map, filter, reduce
+map() vs flatMap()
+collect() to List, Map, or joining strings
+Grouping by department
+Doubling salaries using map()
+Method references and lambda expressions.
+Optional usage (e.g., filtering employees by managerId).
+Create custom predicate.
+Create method calculate(int value, Predicate<Integer> predicate).
+Sorting streams: ascending/descending, comparator usage.
+Find max-length string from a list using Stream.
+Max salary per department using Stream.
+Stream for distinct values from ArrayList.

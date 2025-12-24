@@ -124,7 +124,7 @@ Consumer Configs:
 		public ResponseEntity<String> publishMessage(@RequestBody Payment payment) {
 			String paymentString = objectMapper.writeValueAsString(payment);
 			System.out.println(paymentString);
-			kafkaTemplate.send(PAYMENT_TOPIC, paymentString);
+			kafkaTemplate.send(PAYMENT_TOPIC, 1, paymentString);
 			return ResponseEntity.ok("Message sent to Kafka Topic:" + PAYMENT_TOPIC);
 		}
 

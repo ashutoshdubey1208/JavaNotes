@@ -363,6 +363,8 @@ Functional Programming is stateless and provide parallel processing.
 			List<Emp> filterList = empList.stream().filter(e->e.getSalary() >= 5000).map(e->new Emp(e.getId(),e.getMngId(),e.getSalary()+200)).collect(Collectors.toList());
 		16. merge 2 list and sort:
 			Stream.of(Arrays.asList(4,2,7,1), Arrays.asList(8,3,9,5)).flatMap(List::stream).sorted().forEach(System.out::println);
+			Array:
+			Stream.of(a,b).flatMapToInt(Arrays::stream).distinct().sorted().toArray();
 		17. Intersection of 2 arrays:(Matching Elements)
 			Arrays.stream(a).filter(x->Arrays.stream(b).anyMatch(y->y==x)).distinct().forEach(System.out::println);
 		18. update salary and store all obj in list:
@@ -387,16 +389,18 @@ Functional Programming is stateless and provide parallel processing.
 		24. Print matching(Intersection) from 2 arrays :
 			Set<Integer> set1 = Arrays.stream(arr1).boxed().collect(Collectors.toSet()); //get array in set for matching
 			Arrays.stream(arr2).filter(n-> set1.contains(n)).forEach(System.out::println);
-		25.
+		25. Reverse a string:
+			String reverse = new StringBuilder(str).reverse().toString(); / normal way
+			reverse = Arrays.stream(str.split("")).reduce("",(acc, curr)-> curr+acc);
 
 #Sequential stream vs Parallel stream: Sequential stream uses single thread to process the pipeline. Parallel stream leverage multi-core processors, which increases its performance. Using parallel streams, our code gets divide into multiple streams which can be executed parallelly on separate cores of the system and the final result is shown as the combination of all the individual core’s outcomes
 
 #Map vs flatMap: map() work on stream whereas flatmap in used to work on stream of stream.
 
-#Heap: store objects and use for dynamic allocation and deallocation
-#Stack: store local variable and order of method execution
+#Heap: store objects and instance variables use for dynamic allocation and deallocation
+#Stack: store method calls and local variable and order of method execution
 
-#How to handle Java Array Index Out of Bounds Exception: Using try catch.
+#How to handle Java Array Index Out of Bounds Exception: use proper index bound checking and Use try catch.
 
 #Call functional Interface Runnable run method using lembda: 
 	public static void main(String[] args) {

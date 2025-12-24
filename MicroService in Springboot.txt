@@ -1,3 +1,34 @@
+##IQ:
+#Handle Partial Failure in Microservices: we can handle using resilience pattern like circuit breakers and fallbacks. these machanisms privents cascading failures and allow service to degreade gressfully. 
+    @CircuteBreaker(name = "orderService", fallback = "refundOrder")
+    public Order placeOrder(Order order){
+        paymentService.charge(order.getPayment());
+        return order;
+    }
+
+    public Order refundOrder(Order order, Throwable t){
+        logger.info("Order fails due to: ", t.getMessage());
+        paymentService.refund(order.getPayment());
+        order.setStatus("Refunded");
+        return order;
+    }
+
+#Trace request across multiple microservices: we use custom Noodle Id that is passed as an HTTP header between services. that Noodle Id added to every log entry which allow developer to corellate logs across services for single request. apart from this we can use Spring Cloud Sleuth, Micrometer, Zipkin or OpenTelemetry.
+    1. Add spring-cloud-starter-sleuth Dependency.
+    2. Add spring.sleuth.sampler.probability=1.0 in application.properties.  //1.0:All Request, 0.5:50% Request, 0.1: 10%, 0.0: No Request 
+    3. While creating bean of RestTemplate add TraceRestTemplateInterceptor.
+        @Bean
+        public RestTemplate restTemplate() {
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getInterceptors().add(new TraceRestTemplateInterceptor()); // not required if we don't want to intercept outgoing Http Request
+            return restTemplate;
+        }
+
+#Ensure data consistency across microservices: using Saga Patterns for distributed transactios often combined with event driven communication for eventual consistency.chroeography or orchestration manages sequence of oepeations and compensating transction handle failures.
+    These are other ways:
+        1. Event Driven Architecture with kafka: instead of making direct sychronous calls to each other they communicate asynchronously by producing and consuming.
+        2. Saga Design Pattern: It is a sequence of local transactions where each transaction update local database and publish event to trigger next loacl transaction. if local transaction fails saga excute a series of compensating transcation to undo the preceding transcation.
+
 ###MicroService in Spring Boot:
 #Step 1 (First MicroService): Create Springboot project with these dependencies: Spring Web, Spring Data JPA, Lombok, MySql Driver. and impliment the service API.
 

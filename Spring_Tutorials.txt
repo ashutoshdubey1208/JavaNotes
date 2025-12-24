@@ -353,5 +353,9 @@ Implement Security:
 	5. In configure() add the public urls in antMatchers.
 
 
-
+#Circular Dependency: When 2 or more beans are dependent on each other and form loop to prevent proper object creation.
+	Fixs:
+		1. add spring.main.allow-circular-refference = true in application.property.
+		2. use @Lazy in contructor based injection.
+		3. use setter based injection, its automatically lazy intialize. 
 
