@@ -2,10 +2,10 @@ Collections:-
 **(link is use when insertion order is imp and tree is use when sorting is imp)
 
 # List:- duplicates allowed, insertion order preserved.index play importent role.
-	1. ArrayList:- uses dynamic array, best for storing and accesing, hetrogenious objects allowed,null insertion is possible,default size 10.
+	1. ArrayList:- uses dynamic array, best for storing and accesing, hetrogenious objects allowed,null insertion is possible,default size 10. resizing happen once ArrayList is full during resizing ArrayList create new internal array. new Arraylist size will be 1.5x of current using below formula. once new array created it will copy all the elements from old to new using System.arraycopy(oldArray, 0, newArray, 0, size); old array will be eligible for GC.
 		formula:- new size = (currentsize * 3/2)+1;
-		
-	2. LinkedList:- uses doubly linkedlist, best for manipulation in middle elements.
+	why 1.5X: to improve performace and save wastage memory
+	2. LinkedList:- uses doubly linkedlist, each element stored in node. best for manipulation in middle elements. Internally create a new node, set prev to current last node,set last's node next to new node. No resizing required as nodes will be added as requires. 
 	
 	3. Vector:- Same as ArrayList, only diffrence is vector is syncronized.
 	
@@ -13,12 +13,12 @@ Collections:-
 
 # Set:- Duplicates not allowed, insertion order not preserved, underlying DS is HashMap(HashMap as key map so if value match using isPresent() if present then return false), all collection methods and new method provided by Set.
 
-	1. HashSet:- Duplicates not allowed when try to insert return false, insertion order not preserved uses Hashing to store object, not thread safe. underlying Ds is Hashtable, Hetrogenious and multiple null allowed but when print contents then 1 null will print, default size is 16 and Fill Ratio is 0.75 (after use of 75% new HashSet will be created). as Hashmap is used so objecct is passed as key and Present is passed as value to avoid duplicate entry.
+	1. HashSet:- Duplicates not allowed when try to insert return false, insertion order not preserved uses Hashing to store object, not thread safe. underlying Ds is HashMap, Hetrogenious and multiple null allowed but when print contents then 1 null will print, default size is 16 and Fill Ratio is 0.75 (after use of 75% new HashSet will be created). as Hashmap is used so objecct is passed as key and Present is passed as value to avoid duplicate entry.
 	
-	2. LinkedHashSet:- Duplicates not allowed, maintain insertion order, underlying DS is HashTable + LL.
+	2. LinkedHashSet:- Duplicates not allowed, maintain insertion order, underlying DS is LinkedHashMap. LinkedHashMap maintains Hashtable for fast lookup and Doubly LinkedList to maintain the insertion order.
 	
 	3.SortedSet:- Duplicates not allowed, all object are inserted according to some sorting order(ASC/DESC).
-		3.1 TreeSet:- implimentation of sortedSet, underlying DS is BalanceTree, no Hetrogenious object allowed, only one null object allowed.
+		3.1 TreeSet:- implimentation of sortedSet, underlying DS is RedBlackTree (BalanceTree), no Hetrogenious object allowed, only one null object allowed when using custom Comparator otherwise no null allowed for natural ordering.
 		
 	4.NavigableSet:- It contains methods for navigation purpose.
 
@@ -28,7 +28,7 @@ Collections:-
 	2.Blocking Queue:-
 
 #Map:- Store object in key value pair(entry),duplicate key not allowed value can be duplicated.
-	1. HashMap:- Store object in key value pair, insertion order not maintained, allow one null key and multiple values, store objects in bucket in form of Hashcode, uses Hashtable as DS, not Syncronized, JVM uses equals() to check duplicate keys, default size is 16 and Fill Ratio is 0.75. best for search operation
+	1. HashMap:- Store object in key value pair, insertion order not maintained, allow one null key and multiple values, store objects in bucket in form of Hashcode, not Syncronized, JVM uses equals() to check duplicate keys, default size is 16 and Fill Ratio is 0.75. best for search operation
 	
 	2. LinkedHashMap:- Same as Hashmap expect insertion order maintained, uses Hashtable + LinkedList as DS.
 	
@@ -91,6 +91,12 @@ Collections:-
 	*if hashcode() not overrided then it will return memory address of object.
 	*if we not overrided equals() then it will create different entries for same object as hashcode() will return memory address of object and adress will be different for all the object.
 
+#Best Practices for hashCode Implementation:
+	1. hashCode() should combine all fields used in equals() to maintain consistency. : Objects.hash(name, age);
+	2. Use prime numbers like 31 to combine hash codes efficiently.(31 is odd which reduce collision). : 31 * result + (name == null ? 0 : name.hashCode())
+	3. Check null for obbject field. : field == null ? 0 : field.hashCode();
+	4. Objects.hash() is the easiest modern approach.
+	
 # Comprable:- Comprable use natural sorting order and have compareTo() method, it required single parameter for sorting. available in java.lang : 					Collections.sort(List).
 
 # Comparator:- Comparator uses for customized sorting order, It have compare() method, it required 2 parameters for sorting available in java.util:					Collections.sort(List, Comparator)
