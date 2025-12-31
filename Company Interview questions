@@ -282,14 +282,14 @@ SQL to find 5th highest salary without Max or Top
 4. Hashmap vs hashtable.
 5. hashtable vs synchronizedHashmap.
 6. synchronizedHashmap vs concurrentHashMap.
-7. Thread local:hread-local variables provide a way to maintain separate instances of data for each thread in a multithreaded environment, ensuring thread safety and isolation.
+7. Thread local:Thread-local variables provide a way to maintain separate instances of data for each thread in a multithreaded environment, ensuring thread safety and isolation.
 8. @Restcontroller vs @Controller.
 9. @PathVariable vs @RequestParam vs @QueryParam
 10. how to Produce json and xml from same api
 11. How you implimented security.
 12. what happen if token expired? do user have to login again.
 13. how you do the deployment.
-14. downtime for production environment.
+14. downtime for production environment. : period when application is not available for users. its around 99% = 7hours.
 15. DB exp, junit exp and cloud exp.
 
 ---Value Labs 2nd 

@@ -132,6 +132,11 @@ Functional Programming is stateless and provide parallel processing.
 *Interface:- It can have only abstract,default, static methods and final and static variables.
 *Abstract Class:- It can have all type of methods (private,default,protected,public,abstract,static etc), and all type of variables. 
 
+#Why default method: It is a method present in interface which have body. It allows interfaces to add new methods without breaking classes.
+
+#Diamond Problem: when 1 class impliments 2 interface with same default method causing ambiguity which method to inharit. for solving this issue java forces method to override. class must override the method and can call specific interface method or can provide own implimentation.
+	A.super.show(); // override show method in class and call interface A show().
+
 #A functional interface can extends another interface only when it does not have any abstract method.
 
 # Optional.of vs Optional.ofNullable: Optional.of is use to create object of optional. it expect value is present. if value is null it will throw nullPointerExeception. whereas Optional.ofNullable is use to create object of optional even if value is null. if value not present it will not throw exeception.
@@ -437,6 +442,8 @@ Functional Programming is stateless and provide parallel processing.
 
 #Reflection API: It is use to examine or modify behavior of methods, classes, and interface at runtime. required classes are provided under java.lang.reflection package. Reflection gives information about class and methods to which obeject belongs.
 
+Thread local: it provides thread-local variables. means each thread has it own independent variable.
+	ThreadLocal<Integer> threadLocal = ThreadLocal.withInitial(() -> 0);
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------
