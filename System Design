@@ -1,0 +1,73 @@
+Low Level System Design(LLD):
+
+1. SOLID Principle:
+	S: SRP Single Responsiblity Principle: class should do 1 thing and should have only 1 reason to change.
+	O: OCP Open Closed Principle : class should be open for extension but closed for modification.
+	L: LSP Liskov Substitution Principle : child class must be substitutable for their parent class.
+	I: ISP Interface Segregation Principle: classes should not be forced to impliment a function they do not need.
+	D: DIP Dependency Inversion Principle: High level classes should not dependent on low level classes. both should depend upon abstraction.
+
+#Design Pattern:
+1.Strategy DP: The Strategy Design Pattern is a behavioral pattern that encapsulates different algorithms and allows them to be interchangeable at runtime.
+For example, in a payment system, Credit Card, PayPal, and UPI can be implemented as separate strategies, Each payment method is a separate strategy, but all implement a common PaymentStrategy interface.
+The client selects the required strategy at runtime without using conditional statements.
+This improves flexibility and follows the Open/Closed Principle.	
+	Why this is useful:
+		New payment methods can be added without modifying existing logic
+		Code becomes cleaner and easier to maintain
+		Behavior can change dynamically at runtime
+
+2.Decorator DP: It used to add new behavior or responsibilities to an object dynamically, without modifying its existing code or creating sub classes. It works by wrapping original object with decorator classes that impliment same interface and add extra functionality before or after deligating the call.
+This pattern follows the Open/Closed Principle and uses composition instead of inheritance. 
+For Example a coffee shop where you start with a Basic Coffee.
+You can add Milk, Sugar, or Whipped Cream.
+Each add-on is a decorator that wraps the coffee object and adds extra cost and description.
+You can combine decorators dynamically, like Coffee + Milk + Sugar, without creating separate subclasses for every combination.
+
+	When to use it:
+		When you want to add responsibilities at runtime
+		When subclassing would lead to class explosion
+		When behavior needs to be flexible and combinable
+
+3.Observer DP: It is used when one object changes state multiple other objects needs to be notified automaticilly without tightly coupling them together. there are 2 main roles:
+	1. Subject(Observable): maintain a list of Observer. provide methods to attach, detach and notify Observers.
+	2. Observer: Defines an interface with an update(). gets notified when subject changes.
+
+	For example, in a weather monitoring system, a WeatherStation acts as the subject, and MobileDisplay, TVDisplay, and WebDisplay act as observers.
+	Each display is a separate observer, but all implement a common Observer interface.
+	When the temperature changes in the WeatherStation, all registered displays are updated automatically without tight coupling.
+	
+	Why this is useful:
+		New observers can be added without modifying the subject
+		Objects remain loosely coupled and easier to maintain
+		Automatic notification keeps data consistent across components
+		Ideal for event-driven and real-time systems
+
+	Observer Pattern defines a one-to-many dependency where multiple observers are automatically notified when a subject’s state changes, without tight coupling between them.When something changes, all interested parties should be updated automatically.
+
+4.Decorator DP: It is used when we want to add new behavior to an object dynamically at runtime by wrapping it without modifing its existing code or using inheritance.
+	For example, in a coffee ordering system, a basic Coffee object can be decorated with Milk, Sugar, or WhippedCream.
+	Each add-on is a separate decorator, but all implement a common Coffee interface.
+	Decorators wrap the original coffee object and add their own behavior while delegating calls to the wrapped object.
+
+	Why this is useful:
+		New features can be added without changing existing classes
+		Avoids class explosion caused by multiple inheritance combinations
+		Behavior can be modified dynamically at runtime
+		Code becomes more flexible and maintainable
+	
+	Class Explosion:Class explosion is a design problem where the number of classes grows rapidly and unnecessarily due to using inheritance to handle multiple combinations of features or behaviors.It happens when you create a separate subclass for every possible combination of functionality.
+
+5.Factory DP: The Factory Pattern creates objects without exposing the creation logic to the client and refers to the created objects using a common interface.
+	For example, OperatingSystem is a common interface. Android, iOS, and Windows are concrete implementations. An OSFactory creates and returns the required OS object based on input. Devices like Samsung, Nokia, or Apple use the OperatingSystem interface without knowing which concrete OS is instantiated.
+
+	Why this is useful:
+		Object creation logic is hidden from the client
+		Client code is loosely coupled to concrete implementations
+		New object types can be added without changing existing client code
+		Creation logic is centralized and easier to maintain
+
+6.Chain of Responsibility DP:
+
+
+

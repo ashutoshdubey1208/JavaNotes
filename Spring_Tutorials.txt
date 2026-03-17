@@ -364,3 +364,42 @@ Implement Security:
 #Challenges faced with Kafka: One challenge I faced while implementing Kafka was handling message serialization and ensuring that consumers processed messages in the correct order. I also had to manage proper topic configuration and error handling. I overcame these by using the right serializers/deserializers, configuring partitions carefully. We use JsonSerializer/JsonDeserializer.
 
 #To make RESTful APIs efficient and scalable, I use strategies like caching frequently accessed data, implementing pagination for large responses, and optimizing database queries.
+
+
+#Docker for Springboot: create a file with name Dockerfile and add these basic required cmd:
+	FROM openjdk:17-jdk-slim
+	WORKDIR /app
+	COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
+	EXPOSE 8080
+	ENTRYPOINT ["java","-jar","app.jar"]
+
+	now create a docker-compose.yaml file add these:
+	version: "1.0"
+
+	services:
+		mysql:
+			image: mysql:8
+			container_name	mysql
+			environment:
+				MYSQL_ROOT_PASSWORD: root
+				MYSQL_DATABASE: demo_db
+			restart: always
+			ports:
+				- 3306:3306
+			volumes:
+				- mysql-data: var/lib/mysql
+		app: 
+			image: docker-demo:latest
+			ports:
+				- 8080:8080
+			environment:
+				SERVER_PORT: 8080
+				DB_HOST: mysql
+			volumes:
+				-	names-volume:/app
+
+	valumes:
+		names-volume:
+		mysql-data:
+
+	and run with docker compose up 
