@@ -274,101 +274,6 @@ SQL to find 5th highest salary without Max or Top
 2. how to use JPA.
 3. diffrence between object create with new keyword and @Autowired.
 
-
----Value Labs
-1. what is stream
-2. what is default method 
-3. what is diamond problem. how to solve it. how to soleve if both interface has same default method.
-4. Hashmap vs hashtable.
-5. hashtable vs synchronizedHashmap.
-6. synchronizedHashmap vs concurrentHashMap.
-7. Thread local:Thread-local variables provide a way to maintain separate instances of data for each thread in a multithreaded environment, ensuring thread safety and isolation.
-8. @Restcontroller vs @Controller.
-9. @PathVariable vs @RequestParam vs @QueryParam
-10. how to Produce json and xml from same api
-11. How you implimented security.
-12. what happen if token expired? do user have to login again.
-13. how you do the deployment.
-14. downtime for production environment. : period when application is not available for users. its around 99% = 7hours.
-15. DB exp, junit exp and cloud exp.
-
----Value Labs 2nd 
-1. Spring Security.
-2. java 8 features
-3. what is stream 
-4. what is lembda
-5. get distinct from arraylist.
-6. create rest api for fetch all emp, add emp and update emp.
-7. create hashmap and put values.
-8. write code for jwt token generation and validation.
-
----Valuelabs Internal
-1.
-Solid
-flow of mvc
-how dispatcher servelt know which contorller will be called: view Resolver.
-
-latest saled products
-select * from sales where sale_date = :date
-
-@Query(value="select * from sales where sale_date = :date", native=true)
-findAllBySalesDate(Date date)
-
-
-create restAPI 
-singleton 
-spring vs spring boot
-
-Java 8 grouping by coding questions like get department counting
-design pattern used in microservice.
-facade pattern with exp
-2nd higest salary. 
-best practice in sql to follow
-multiplicity annotation in jpa: 1to1 1tomany relations
-Oauth jwt aws restless
-how to use common code in multiple microservices how to make it as single code so can be reused. : shared Library
-prg to 1st non repeting char from string
-
-scaling
-docarazation
-containeriztion
-webflux
-singlaton immutable
-how lemda related to functional interface
-if we not mark interface with @functionalinterface will it be functional interface
-how to check the production issue
-status codes
-@controller
-aws 
-
-queary to get empcound by dept and count > 50
-why we use jpa
-how to write test case
-program to swap 2 var without using 3rd var.
-java 8 features.
-stream to convert list into map where id will be key
-
-feing client
-how to do load balance
-cirturt breaker
-default scope of bean in springboot
-java 8 features
-builder DP
-comparable vs comparator, which is best and why.
-prg to find most frequent char from string 
-why string is immutable
-yeild() in thread
-excutor service
-how to do 1 to many mapping
-archituctor of microservices
-internal working of hashmap
-how to connect to DB
-@primary
-Basic annotations
-jwt security
-throw vs throws
-base class of exception
-what is error
 --------------------------------------------------------------------------------------------------------------------------------------------------
 ---- city corp--Internet
 var length arg, can we replace string args[] with var length arg in main()
@@ -545,6 +450,101 @@ In array of 1 to 10, there are two threads thread1 and thread2, thread1 need to 
 
 
 In array of sorted numbers 1 to 100, three numbers are missing, need to find second largest number from missing numbers?
+
+---ValueLabs
+1. what is stream
+2. what is default method 
+3. what is diamond problem. how to solve it. how to soleve if both interface has same default method.
+4. Hashmap vs hashtable.
+5. hashtable vs synchronizedHashmap.
+6. synchronizedHashmap vs concurrentHashMap.
+7. Thread local:Thread-local variables provide a way to maintain separate instances of data for each thread in a multithreaded environment, ensuring thread safety and isolation.
+8. @Restcontroller vs @Controller.
+9. @PathVariable vs @RequestParam vs @QueryParam
+10. how to Produce json and xml from same api
+11. How you implimented security.
+12. what happen if token expired? do user have to login again.
+13. how you do the deployment.
+14. downtime for production environment. : period when application is not available for users. its around 99% = 7hours.
+15. DB exp, junit exp and cloud exp.
+
+---ValueLabs 2nd 
+1. Spring Security.
+2. java 8 features
+3. what is stream 
+4. what is lembda
+5. get distinct from arraylist.
+6. create rest api for fetch all emp, add emp and update emp.
+7. create hashmap and put values.
+8. write code for jwt token generation and validation.
+
+---Valuelabs Internal
+1.
+Solid
+flow of mvc
+how dispatcher servelt know which contorller will be called: view Resolver.
+
+latest saled products
+select * from sales where sale_date = :date
+
+@Query(value="select * from sales where sale_date = :date", native=true)
+findAllBySalesDate(Date date)
+
+
+create restAPI 
+singleton 
+spring vs spring boot
+
+Java 8 grouping by coding questions like get department counting
+design pattern used in microservice.
+facade pattern with exp
+2nd higest salary. 
+best practice in sql to follow
+multiplicity annotation in jpa: 1to1 1tomany relations
+Oauth jwt aws restless
+how to use common code in multiple microservices how to make it as single code so can be reused. : shared Library
+prg to 1st non repeting char from string
+
+scaling
+docarazation
+containeriztion
+webflux
+singlaton immutable
+how lemda related to functional interface
+if we not mark interface with @functionalinterface will it be functional interface
+how to check the production issue
+status codes
+@controller
+aws 
+
+queary to get empcound by dept and count > 50
+why we use jpa
+how to write test case
+program to swap 2 var without using 3rd var.
+java 8 features.
+stream to convert list into map where id will be key
+
+feing client
+how to do load balance
+cirturt breaker
+default scope of bean in springboot
+java 8 features
+builder DP
+comparable vs comparator, which is best and why.
+prg to find most frequent char from string 
+why string is immutable
+yeild() in thread
+excutor service
+how to do 1 to many mapping
+archituctor of microservices
+internal working of hashmap
+how to connect to DB
+@primary
+Basic annotations
+jwt security
+throw vs throws
+base class of exception
+what is error
 
 Valuelabs Internal -----
 how you handle exception. : @ControllerAdvise class, @ExceptionHandler method or custom exception
