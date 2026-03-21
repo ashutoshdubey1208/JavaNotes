@@ -6,6 +6,8 @@ IQ:-
 	Patch: Use PATCH when you want to make partial updates to a resource.
 	Delete: safe method as no effect on multiple calls.
 
+Idempotent: doing the same operation multiple times has the same effect as doing it once.
+
 #Java Code Compilation and Runtime:-
 	*Compilation:- Java code(demo.java)->compiler-> Bytecode(demo.class).
 	
@@ -232,7 +234,12 @@ Functional Programming is stateless and provide parallel processing.
 
 #Java Executor Service: It is interface which allows to excute tasks on threads asynchronously. 
 		ExecutorService es = new Executors.newFixedThreadPool(5);
-		for(int i = 0; i<=25; i++){es.execute(new Service(i));}
+		for(int i = 0; i<=25; i++){
+			int num = i;
+			es.execute(()->{
+				System.out.println(num+"-"+Thread.currentThread().getName());
+			});
+		}
 		es.shutdown();
 	execute(): to start the thread executor service.
 	shutdown(): to shutdown the thread executor service. es.shutdown();
@@ -268,6 +275,7 @@ Functional Programming is stateless and provide parallel processing.
 *Abstract Factory Design Pattern: same as Factory Pattern and is considered as another layer of abstraction over factory pattern.
 
 *Builder Design Pattern: this pattern allows to solve some of the problems with factory design pattern when object contains alot of attributes. this pattern solve issue with large no. of optional parameters and inconsitent state by providing way to build object step-by-step and provide a method to return final object.
+Exp: pizza making
 
 *Prototype Design Pattern: it allow us to copy existing object rather than creating new object from scratch. because new object may be costly. this approch saves costly resources and time. especially when object creation is havey process. use clone to create new object. 
 	Exp: create new class for fetching network data. suppose it take 30 min to fetch data. every time we create object of this class it will fetch same data and take 30 mins. with the help of Prototype design pattern we can create clone of already created object then time and use of resources will be reduced.
@@ -572,6 +580,8 @@ Thread local: it provides thread-local variables. means each thread has it own i
 #API gateway locate between the client apps and the internal microservices. It is working as a reverse proxy and routing requests from clients to backend services. It is also provide cross-cutting concerns like authentication, SSL termination, and cache.
 
 #@MappedSuperclass:this annotation used on common entity class. in this class we put common fields for entities like createdAt, updatedAt etc. and extends in other Entity class.
+
+#N+1 Query Problem: N+1 Query Problem happens when fetching a list triggers one query for the list and one query per item for associated data. Solution: use fetch join or entity graph to fetch everything in a single query.
 --------------------------------------------
 #Highest salary from each department:
 	SELECT DeptID, EmpName, Salary FROM EmpDetails WHERE (DeptID,Salary) IN (SELECT DeptID, MAX(Salary) FROM EmpDetails GROUP BY DeptID).

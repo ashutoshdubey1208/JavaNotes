@@ -482,11 +482,10 @@ In array of sorted numbers 1 to 100, three numbers are missing, need to find sec
 1.
 Solid
 flow of mvc
-how dispatcher servelt know which contorller will be called: view Resolver.
+how dispatcher servelt know which contorller will be called: HandlerMapping.
 
 latest saled products
-select * from sales where sale_date = :date
-
+SELECT * FROM sales WHERE sold_date = :date ORDER BY sold_date DESC;
 @Query(value="select * from sales where sale_date = :date", native=true)
 findAllBySalesDate(Date date)
 
@@ -502,7 +501,7 @@ facade pattern with exp
 best practice in sql to follow
 multiplicity annotation in jpa: 1to1 1tomany relations
 Oauth jwt aws restless
-how to use common code in multiple microservices how to make it as single code so can be reused. : shared Library
+how to use common code in multiple microservices how to make it as single code so can be reused. : Common Library
 prg to 1st non repeting char from string
 
 scaling

@@ -93,7 +93,15 @@
 	2. Application Context: It is default IOC Container for Spring Boot. It loads all beans at the startup. It follows egar loading approch. use for integration of AOP, ORM and distributed Application. (Best) support all type of bean scopes and support annotation based configration of bean autowiring.
 
 #Dispatcher Servelet: It is the front controller that handle all incoming HTTP requests and send response back to client. The Spring Boot autoconfiguration registers and configures the DispatcherServlet automatically.
-
+Flow handle by Dispatcher Servelet:
+	1. Client Request
+	2. DispatcherServlet
+	3. HandlerMapping → finds controller
+	4. HandlerAdapter → executes method
+	5. Controller → business logic
+	6. ViewResolver / MessageConverter
+	7. Response to client
+	
 #lazy initialization in spring: Use @Lazy in service class and where autowiring service.
 	    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 
