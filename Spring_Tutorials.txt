@@ -103,7 +103,13 @@ Flow handle by Dispatcher Servelet:
 	7. Response to client
 
 #lazy initialization in spring: Use @Lazy in service class and where autowiring service.
-	    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+		@Component
+		@Lazy
+		public class MyService {
+		    public MyService() {
+		        System.out.println("Lazy Bean created!");
+		    }
+		}
 
 #Change server in spring boot application:
 	1. exclude tomcat from starter dependency.
@@ -126,6 +132,7 @@ Flow handle by Dispatcher Servelet:
 #Profiling in Springboot: We need diffrent properties for different env. creating different properties for different env is called profiling. after creating multiple property files, use spring.profiles.active = dev then appliaction-dev.properties profile will be activated. we can pass multiple properties file name in spring.profiles.active. we can create beans based on active profile. use @Profile("test") in entity file so that entity will be created only file test profile is active, for other env we will get BeanCreationException.
 
 #How transaction is handled in spring boot: use @Transactional on the method and @EnableTransactionManagement on main class. Spring handles transaction using AOP proxies. when a method is annotated with @Transactional, spring create a proxy around that method. proxy start and manage transaction throgh PlateformTransactionManager. Transaction is bound to current thread using TransactionSynchronizationManager. if the method finish successfully, spring commits, if exception occours it rollback.  
+When a transactional method is called, the proxy starts a transaction, executes the method, and then commits or rolls back based on success or failure.
 
 #Cache In springboot:
 	1. use spring-boot-starter-cache dependency.
@@ -133,6 +140,54 @@ Flow handle by Dispatcher Servelet:
 	3. use @cacheable on method you want to cache. whatever you are returing will be cached.
 	4. 1st time data will fetch from DB but from 2nd time it will return whatever we have in cache.
 	5. default type of caching is In-memory cache using concurrentHashMap.
+
+#Redis In springboot:
+	1. use spring-boot-starter-data-redis dependency.
+	2. add config to application.properties:
+		spring.redis.host=localhost
+		spring.redis.port=6379
+		spring.redis.password= # if set
+		spring.redis.timeout=60000
+		cache.user.ttl=300
+	3.Create a Redis Configuration
+		@Configuration
+		public class RedisConfig {
+		    @Bean
+		    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory connectionFactory) {
+		        RedisTemplate<String, Object> template = new RedisTemplate<>();
+		        template.setConnectionFactory(connectionFactory);
+		        template.setKeySerializer(new StringRedisSerializer());
+		        template.setValueSerializer(new StringRedisSerializer());
+		        return template;
+		    }
+		}
+	4. Using RedisTemplate:
+		@Service
+		public class RedisService {
+		    private final RedisTemplate<String, Object> redisTemplate;
+		    public RedisService(RedisTemplate<String, Object> redisTemplate) {
+		        this.redisTemplate = redisTemplate;
+		    } 
+		    public void save(String key, String value, long ttlSeconds) {
+		        redisTemplate.opsForValue().set(key, value, ttlSeconds, TimeUnit.SECONDS); // Save data
+		    }
+		    public String get(String key) {
+		        return (String) redisTemplate.opsForValue().get(key); // Get data
+		    }
+		    public void delete(String key) {
+		        redisTemplate.delete(key); // Delete data
+		    }
+		}
+	5. Using @Cacheable with Redis: mark main class with @EnableCaching
+		@Service
+		public class UserService {
+
+		    @Cacheable(value = "users", key = "#id")
+		    public String getUserById(String id) {
+		        // Simulate DB call
+		        return "User-" + id;
+		    }
+		}
 
 #Handle expection in Spring boot: Create Custom Exception class, create GlobalExceptionHandler class mark it with @RestControllerAdvice, create new method mark it with @ExceptionHandler(customException.class).
 
@@ -219,7 +274,7 @@ Flow handle by Dispatcher Servelet:
 			System.out.println(chunk.toString());
 		}
 
-#	: 
+#Produce JSON and XML: 
 		Step 1. use jackson-dataformat-xml, jaxb-runtime, jaxb-api dependencies.
 		Step 2. use produces
 			@GetMapping(value = "/entityEmployee", produces = { MediaType.APPLICATION_JSON_VALUE,
