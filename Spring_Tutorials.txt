@@ -21,7 +21,7 @@
 
 #@Configuration vs @Component: both annotation is use to register bean to application context.@Configuration tells that class may have multiple beans.
  
-#@Primary vs @Qualifier:- @Qualifier annotation is used to resolve ambiguity when multiple beans of the same type exist, whereas the @Primary annotation designates a default bean to be injected when no qualifier is specified
+#@Primary vs @Qualifier:- @Qualifier annotation is used to resolve ambiguity when multiple beans of the same type exist, whereas the @Primary annotation designates a default bean to be injected when no qualifier is specified. @Primary is used on bean whereas @Qualifier is used while injecting the bean. 
 
 #Jar available in spring-boot-starter-web dependency: It contains spring boot starter, Jackson, spring core, spring MVC, spring boot starter tomcat.
 
@@ -58,8 +58,8 @@
 
 #DI can be achived using 3 ways: 
 	1. Setter Injection: IOC Container will inject dependent bean object in to targeted bean by calling setter method. (@Autowire Setter)
-	2. Constructor Injection: dependent bean object injected in to targeted bean by calling targeted bean constructor. (@Autowire Constructor)
-	3. Field Injection: dependent bean object injected in to targeted bean object by x. (Direct @Autowire). Default
+	2. Constructor Injection: dependent bean object injected in to targeted bean by calling targeted bean constructor. (pass bean to Constructor)
+	3. Field Injection: dependent bean object injected in to targeted bean object by x. (Direct @Autowire on top). Default
 
 #Reflection API: used to check and modify the behavior of the interfaces, classes, and methods at the runtime. 
 
@@ -101,7 +101,7 @@ Flow handle by Dispatcher Servelet:
 	5. Controller → business logic
 	6. ViewResolver / MessageConverter
 	7. Response to client
-	
+
 #lazy initialization in spring: Use @Lazy in service class and where autowiring service.
 	    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 
@@ -134,7 +134,8 @@ Flow handle by Dispatcher Servelet:
 	4. 1st time data will fetch from DB but from 2nd time it will return whatever we have in cache.
 	5. default type of caching is In-memory cache using concurrentHashMap.
 
-#Handle expection in Spring boot:
+#Handle expection in Spring boot: Create Custom Exception class, create GlobalExceptionHandler class mark it with @RestControllerAdvice, create new method mark it with @ExceptionHandler(customException.class).
+
 	1.Create new CustomException class.
 	2.Create ExceptionResponse Class.
 	3.Create GlobalExceptionHandler class write method for each CustomException class.
@@ -218,7 +219,7 @@ Flow handle by Dispatcher Servelet:
 			System.out.println(chunk.toString());
 		}
 
-#Return JSON and XML response from 1 API: 
+#	: 
 		Step 1. use jackson-dataformat-xml, jaxb-runtime, jaxb-api dependencies.
 		Step 2. use produces
 			@GetMapping(value = "/entityEmployee", produces = { MediaType.APPLICATION_JSON_VALUE,
@@ -329,9 +330,14 @@ Flow handle by Dispatcher Servelet:
 	4.Asynchronus Messaging: All services can communicate to each other but they do not have to communicate with each other sequentially.
 	5.Database: each service can have specific database for themself or can you shared database by multiple services.
 	6.Saga: Manages transactions across multiple services.
-	
-	Circuit breaker:
-	
+		Types:
+		1.Choreography (Event-Based): each ms reacts to event and decide what to do next.service publish event other service listen and act each service may publish another event. exp: success: order created-> payment processed-> reserve stock. failed: payment failed-> order cancle.
+		2.Orchestration (Central Controller):a central orchestrator service controls entire workflow and tell each service what to do. Orchestrator calls serivices step by step, decide next step based on response, handle failures and compensations.
+	7.Circuit breaker: A pattern used to prevent cascading failures when service is down.
+	8.Service Discovery: A pattern where services dynamically find each other without hardcoding URLs.
+	9.Event-Driven Architecture:Services communicate each other using events instead of direct API calls.
+	10.CQRS (Command Query Responsibility Segregation): separate write operation(commands) and read operation(queries).
+
 #Inter Service Communication: service communicate in 2 manner:
 	1. Sync: using Rest or GRPC. RestTemplete or webclient
 	2. Async: using message broker like rabbitmq, kafka.
@@ -373,6 +379,7 @@ Implement Security:
 
 #To make RESTful APIs efficient and scalable, I use strategies like caching frequently accessed data, implementing pagination for large responses, and optimizing database queries.
 
+#We use JPA to simplify database operations, provide ORM mapping, reduce boilerplate JDBC code, ensure database portability and work with java objects instead of SQL tables directly.
 
 #Docker for Springboot: create a file with name Dockerfile and add these basic required cmd:
 	FROM openjdk:17-jdk-slim

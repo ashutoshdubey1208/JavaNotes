@@ -582,6 +582,8 @@ Thread local: it provides thread-local variables. means each thread has it own i
 #@MappedSuperclass:this annotation used on common entity class. in this class we put common fields for entities like createdAt, updatedAt etc. and extends in other Entity class.
 
 #N+1 Query Problem: N+1 Query Problem happens when fetching a list triggers one query for the list and one query per item for associated data. Solution: use fetch join or entity graph to fetch everything in a single query.
+
+#Thread local:ThreadLocal is a class that provides thread-local variables, meaning each thread has its own independent copy of a variable.
 --------------------------------------------
 #Highest salary from each department:
 	SELECT DeptID, EmpName, Salary FROM EmpDetails WHERE (DeptID,Salary) IN (SELECT DeptID, MAX(Salary) FROM EmpDetails GROUP BY DeptID).
