@@ -584,6 +584,11 @@ Thread local: it provides thread-local variables. means each thread has it own i
 #N+1 Query Problem: N+1 Query Problem happens when fetching a list triggers one query for the list and one query per item for associated data. Solution: use fetch join or entity graph to fetch everything in a single query.
 
 #Thread local:ThreadLocal is a class that provides thread-local variables, meaning each thread has its own independent copy of a variable.
+
+#We have a query which is taking alot of time how you will optimize it.: avoid select *, replace subqueries with joins, use limit for pagination, or use caching, batch operation.
+
+#Indexing: technique to speed up data retrival, allows to find row faster without scaning entire table
+
 --------------------------------------------
 #Highest salary from each department:
 	SELECT DeptID, EmpName, Salary FROM EmpDetails WHERE (DeptID,Salary) IN (SELECT DeptID, MAX(Salary) FROM EmpDetails GROUP BY DeptID).

@@ -585,6 +585,26 @@ move 1 table to other few records got missing how to find missing records.
 what are challenges faced while implimanting Security and kafka and how you overcome.
 strategies do we use to ensure Restfull Apis are efficent and scalable?
 
+User{
+	private Integer id;
+
+}
+interface UserRepo implimnets JpaRepository<User,Integer> {
+	
+}
+
+Predicate<Integer> isEven = n-> n%2 == 0;
+
+isEven.test(4);
+
+Emp e = new Emp();
+
+sort the employees based on salary , if incase 2 employees have same salary then should compare based on name
+
+list.stream().collect(Collectors.groupingBy(i->i, Collectors.counting())).entrySet().stream()
+
+
+
 -------Programs-------------
 Implement Singleton class.
 Create immutable class.
