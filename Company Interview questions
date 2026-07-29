@@ -580,7 +580,12 @@ how indexing works what is index
 2nd highest salary
 how to handle parralel 
 
-move 1 table to other few records got missing how to find missing records.
+move 1 table to other few records got missing how to find missing records.:  
+SELECT o.*
+FROM EMPLOYEE_OLD o
+LEFT JOIN EMPLOYEE_NEW n
+ON o.EMP_ID = n.EMP_ID
+WHERE n.EMP_ID IS NULL;
 
 what are challenges faced while implimanting Security and kafka and how you overcome.
 strategies do we use to ensure Restfull Apis are efficent and scalable?

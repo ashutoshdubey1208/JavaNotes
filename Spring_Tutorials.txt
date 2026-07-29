@@ -196,40 +196,33 @@ When a transactional method is called, the proxy starts a transaction, executes 
 	3.Create GlobalExceptionHandler class write method for each CustomException class.
 
 	Exp.
-	1.Custom Exception Handling: create custom exception class by extending RunTimeException class.
-		public class ResourceNotFound extends RunTimeException {  
-			private String message;
-			private HttpStatus status;
-		    public ResourceNotFound(String message) {  
-		    	super(message);
-		    	this.message = message;
-		    	this.status = HttpStatus.NOT_FOUND; 
-		    }  
-
-		    generate getters;
+	1.Create Custom Exception:
+		public class EmployeeNotFoundException extends RuntimeException {
+		    public EmployeeNotFoundException(String message) {
+		        super(message);
+		    }
 		}
 
-	2. Create ErrorResponse Class 
-		public class ErrorResponse { 
-			private String message;
-			private HttpStatus status;
-			private LocalDateTime time;
-		    public ResourceNotFound(String message, HttpStatus status) {  
-		    	this.message = message;
-		    	this.status = status; 
-		    	this.time = LocalDateTime.now()
-		    }  
-		    generate getter and setter
-		} 
+	2. Throw Exception from Service:
+		@Service
+		public class EmployeeService {
+		    public Employee getEmployee(Long id) {
+		        return repository.findById(id)
+		                .orElseThrow(() ->
+		                     new EmployeeNotFoundException("Employee not found"));
+		    }
+		}
 
-	3..Create GlobalExceptionHandler mark with @RestControllerAdvice and mark method with @ExceptionHandler(CustomException.class)
+	3.Create Global Exception Handler:
 		@RestControllerAdvice
-		public class ResourceNotFound {  
-			@ExceptionHandler(ResourceNotFound.class)
-			public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFound ex){
-				ErrorResponse response = new ErrorResponse(ex.getMessage(), ex.getStatus());
-				return new ResponseEntity<>(response, ex.getStatus());
-			}
+		public class GlobalExceptionHandler {
+		    @ExceptionHandler(EmployeeNotFoundException.class)
+		    public ResponseEntity<String> handleEmployeeNotFound(
+		            EmployeeNotFoundException ex) {
+		        return ResponseEntity
+		                .status(HttpStatus.NOT_FOUND)
+		                .body(ex.getMessage());
+		    }
 		}
 
 #Cache data can be inconsistant with DB changes to handle this Spring provide @CachePut to update cache after DB changes and @CacheEvict to remove cache entries after deletion. in distributed caches we can use TTL to automatically expire stale data. 
