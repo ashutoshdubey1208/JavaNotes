@@ -189,8 +189,18 @@ Functional Programming is stateless and provide parallel processing.
 		$ java HelloWorld.java
 		Hello Java 11!
 	
-#Java 17 Features:
-* 
+#Java 21 Features:
+1. Virtual Threads: It is lightweight thread which is managed by JVM instead of OS. previously java used plateform threads which is expensive to create and cosume significate memory.
+
+2. Record Patterns: Special immutable class designed to act as transparent data carriers with minimal boilerplate.
+	// Definition automatically generates fields, constructor, getters, equals, hashCode, and toString
+	public record User(String name, int age) {}
+
+3. Sequenced Collections:interfaces for collections that preserve encounter order:
+	list.getFirst();
+	list.getLast();
+	list.addFirst();
+	list.addLast();
 
 #Relationship between classes: 2 types:
 	1. Inheritance (Is-A ): relation build using extends keyword one class to other. Dog Is-A Animal. tightly coupled. 

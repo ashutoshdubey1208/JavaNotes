@@ -429,6 +429,25 @@ Implement Security:
 
 #We use JPA to simplify database operations, provide ORM mapping, reduce boilerplate JDBC code, ensure database portability and work with java objects instead of SQL tables directly.
 
+#Feign Client: Feign Client is a declarative HTTP client provided by Spring Cloud OpenFeign. It allows one microservice to call another microservice by simply defining a Java interface, without writing boilerplate code using RestTemplate or WebClient.
+1.Add Dependency: spring-cloud-starter-openfeign
+2.Enable Feign in main Class @EnableFeignClients.
+3.Create Feign Interface:
+	@FeignClient(name = "employee-service")
+	public interface EmployeeClient {
+	    @GetMapping("/employees/{id}")
+	    Employee getEmployee(@PathVariable Long id);
+	} 
+4.Inject and Use:
+	@Service
+	public class OrderService {
+	    @Autowired
+	    private EmployeeClient employeeClient;
+	    public Employee getEmployee(Long id) {
+	        return employeeClient.getEmployee(id);
+	    }
+	}
+
 #Docker for Springboot: create a file with name Dockerfile and add these basic required cmd:
 	FROM openjdk:17-jdk-slim
 	WORKDIR /app
