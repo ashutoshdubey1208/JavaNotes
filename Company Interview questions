@@ -608,7 +608,20 @@ sort the employees based on salary , if incase 2 employees have same salary then
 
 list.stream().collect(Collectors.groupingBy(i->i, Collectors.counting())).entrySet().stream()
 
-
+Snapfish:
+Suppose you're working in a Microservices project. One service is failing. How do you identify which service is failing, inform the respective team, and handle it in your own service?
+what is 500 and 202 status code. when we get it. 500: unexpected exception Arithmatic, nullpointer etc. 202-Accepted: asynchronus request accepted but processing not completed. 
+what is jwt and how we validate jwt token at api getway.
+what happen in case of expired token.
+memory management and class loader.
+connection pool
+map vs flatmap. why available in stream and optional both.
+java 8 features
+n+1 problem
+spring vs springboot
+singleton vs prototype.
+find highest salary by department.
+sort given array. int[] n = {1,0,4,0,9,3,5,7,0}
 
 -------Programs-------------
 Implement Singleton class.

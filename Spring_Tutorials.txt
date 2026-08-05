@@ -448,6 +448,71 @@ Implement Security:
 	    }
 	}
 
+#Handle Service failure:
+	1. Check Application's Splunk Logs: for 500 or 503 errors.Review exception messages and stack traces to identify the failing service.
+	2. Check Request Flow Using Trace ID/ Correlation ID: (or Noodle ID, if used in the project) in Splunk.Follow the request flow across services to identify where the failure occurred.
+	3. Verify Whether the Issue Is in My Service: Request payload is correct. Required headers and authentication token are present.Service URL/configuration is correct. The error is not caused by my service. 
+	4. Handle the Failure in My Service:Use resilience mechanisms such as: Retry (for temporary failures). Circuit Breaker (to avoid repeated failed calls). Fallback response.	Timeout configuration
+
+#RestTemplate vs WebClient vs FeignClient:
+	1.RestTemplate:It is a synchronous blocking Http client used to call REST APIs.It support all Http methods with exchange() providing most flexiblity for custom headers and request bodies. now its in maintenance mode.
+		Exp:
+			1. create bean:
+			@Bean
+		    public RestTemplate restTemplate() {
+		        return new RestTemplate();
+		    }
+			2.call:
+			Employee employee = restTemplate.getForObject(
+			    "http://localhost:8081/employees/1",
+			    Employee.class
+			);
+
+	2.WebClient:It is spring modern non-blocking client reactive Http client, introduced in spring 5 as part of Spring WebFlux. It support both synchronous and non synchronous communication. but primarily desinged for reactive application where it increase scalibility by avoiding thread blocking during O/I operations. suitablen for reactive and high-concurrency application.
+		Exp:
+			1. create bean:
+			@Bean
+		    public WebClient webClient() {
+		        return WebClient.builder().build();
+		    }
+		    2.call:
+		    Employee employee = webClient.get()
+			        .uri("http://localhost:8081/employees/1")
+			        .retrieve()									//excute the request
+			        .bodyToMono(Employee.class)					//convert response to a Mono<Employee>. use bodyToFlux when List<Employee>
+			        .block();									//wait for result. used to makes synchronous calls
+
+		*Mono:Returns 0 or 1 object.
+		*Flux:Returns multiple objects.
+
+	3.RestClient:It is mordern synchronous Http Clinet introduced in Spring Fraimwork 6.1 as replacement of RestTemplate.It provide fluent more readable API while remaining blocking.
+		Exp:
+			1. create bean 
+			@Bean
+		    public RestClient restClient() {
+		        return RestClient restClient = RestClient.create();
+		    }
+
+		    2.call
+			Employee employee = restClient.get()
+			        .uri("http://localhost:8081/employees/1")
+			        .retrieve()
+			        .body(Employee.class); 
+	4.Feign client:It is a declarative HTTP client used mainly in microservices, where we define interface and spring generates implementation, making inter-service communication much simpler.
+	Exp.
+		1.Interface:
+		@FeignClient(name = "employee-service")
+		public interface EmployeeClient {
+
+		    @GetMapping("/employees/{id}")
+		    Employee getEmployee(@PathVariable Long id);
+
+		}
+		2.Use:
+		public Employee getEmployee(Long id) {
+	        return employeeClient.getEmployee(id);
+	    }
+
 #Docker for Springboot: create a file with name Dockerfile and add these basic required cmd:
 	FROM openjdk:17-jdk-slim
 	WORKDIR /app

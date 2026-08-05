@@ -1,0 +1,377 @@
+Topics:
+Java Fundamentals
+Java Features
+JDK vs JRE vs JVM
+Java Compilation Process
+JVM Architecture
+Memory Areas
+Heap vs Stack
+Garbage Collection
+Class Loader
+Execution Engine
+Object Oriented Programming
+OOP Principles
+Abstraction
+Encapsulation
+Inheritance
+Polymorphism
+Association
+Aggregation
+Composition
+SOLID Principles
+Java Language Features
+Variables
+Data Types
+Operators
+Wrapper Classes
+Autoboxing
+String
+StringBuilder
+StringBuffer
+Immutable Objects
+final, finally, finalize
+Static Keyword
+Access Modifiers
+Exception Handling
+Checked Exception
+Unchecked Exception
+try-catch-finally
+throw vs throws
+Custom Exceptions
+Try-with-resources
+Collections Framework
+List
+Set
+Map
+Queue
+Stack
+ArrayList
+LinkedList
+HashMap
+LinkedHashMap
+TreeMap
+HashSet
+LinkedHashSet
+TreeSet
+PriorityQueue
+Comparable
+Comparator
+equals() & hashCode()
+Fail Fast vs Fail Safe
+Multithreading
+Thread Lifecycle
+Runnable vs Callable
+Synchronization
+Lock
+ReentrantLock
+volatile
+Atomic Classes
+wait()
+notify()
+notifyAll()
+Thread Pool
+ExecutorService
+CompletableFuture
+Fork Join Pool
+Deadlock
+Race Condition
+Producer Consumer
+Java 8+
+Lambda
+Functional Interface
+Method Reference
+Stream API
+Optional
+Date Time API
+Default Methods
+Collectors
+JVM Performance
+Heap Dump
+Memory Leak
+GC Algorithms
+JVM Parameters
+Profiling
+JIT Compiler
+2. Spring Framework
+Spring Core
+IOC
+Dependency Injection
+Bean Lifecycle
+Bean Scope
+BeanFactory
+ApplicationContext
+Component Scan
+Configuration
+@Bean
+@Component
+@Service
+@Repository
+@Controller
+@Autowired
+Qualifier
+Primary
+Spring AOP
+Aspect
+Advice
+Join Point
+Pointcut
+Proxy
+Around Advice
+Spring Events
+Event Publisher
+Event Listener
+Spring Profiles
+Profiles
+Property Sources
+Environment
+3. Spring Boot
+Basics
+Spring Boot Architecture
+Auto Configuration
+Starter Dependencies
+Spring Initializr
+Embedded Server
+Application Properties
+YAML
+REST APIs
+REST Principles
+Controller
+Request Mapping
+Validation
+Exception Handling
+ResponseEntity
+DTO
+Global Exception Handler
+Configuration
+Configuration Properties
+Profiles
+External Configuration
+Environment Variables
+Logging
+SLF4J
+Logback
+MDC
+Monitoring
+Spring Boot Actuator
+Health Check
+Metrics
+Testing
+JUnit
+Mockito
+MockMvc
+Integration Testing
+TestContainers
+4. Spring Data JPA / Hibernate
+ORM
+Entity Lifecycle
+Persistence Context
+First Level Cache
+Second Level Cache
+Entity States
+Dirty Checking
+Lazy Loading
+Eager Loading
+Cascade Types
+Fetch Types
+Relationships
+JPQL
+Native Query
+Criteria API
+Specification
+Pagination
+Sorting
+Transactions
+Optimistic Locking
+Pessimistic Locking
+N+1 Problem
+5. Spring Security
+Authentication
+Authorization
+Security Filter Chain
+JWT
+OAuth2
+Basic Authentication
+Form Login
+Password Encoder
+UserDetailsService
+AuthenticationProvider
+AuthenticationManager
+CSRF
+CORS
+Method Security
+Role Based Access
+Token Validation
+Refresh Token
+6. Spring Batch
+
+Since you've worked on Batch, interviewers will ask deep questions.
+
+Batch Architecture
+Job
+Step
+Tasklet
+Chunk Processing
+ItemReader
+ItemProcessor
+ItemWriter
+JobRepository
+JobLauncher
+JobParameters
+ExecutionContext
+Restartability
+Skip
+Retry
+Partitioning
+Parallel Processing
+Scheduling
+Job Listener
+Step Listener
+Multi-threaded Batch
+7. Microservices
+Monolith vs Microservices
+Service Discovery
+API Gateway
+Load Balancer
+Circuit Breaker
+Retry
+Timeout
+Bulkhead
+Distributed Tracing
+Centralized Logging
+Configuration Server
+Service Registry
+Inter Service Communication
+REST
+gRPC
+Event Driven Architecture
+Saga Pattern
+CQRS
+Idempotency
+API Versioning
+Health Check
+Resilience Patterns
+8. Kafka
+Kafka Architecture
+Broker
+Topic
+Partition
+Offset
+Producer
+Consumer
+Consumer Group
+Leader
+Replica
+ISR
+Retention
+Ack
+Delivery Semantics
+Exactly Once
+At Least Once
+At Most Once
+Rebalancing
+Serializer
+Deserializer
+Dead Letter Topic
+Retry Topic
+Ordering
+Transactions
+9. Database
+SQL
+Joins
+Group By
+Having
+Window Functions
+Index
+Composite Index
+Clustered Index
+Normalization
+Transactions
+ACID
+Isolation Levels
+Locks
+Deadlock
+Views
+Stored Procedures
+10. Design Patterns
+Singleton
+Factory
+Abstract Factory
+Builder
+Prototype
+Adapter
+Facade
+Decorator
+Strategy
+Observer
+Template Method
+Proxy
+Chain of Responsibility
+11. System Design (Very Important for 8+ Years)
+URL Shortener
+Notification Service
+Payment System
+Rate Limiter
+Cache Design
+Logging System
+File Upload System
+API Gateway Design
+Inventory System
+Order Management
+Distributed Cache
+Messaging Queue
+Load Balancing
+Database Sharding
+CAP Theorem
+Consistent Hashing
+12. DevOps & Cloud Basics
+Docker
+Kubernetes Basics
+CI/CD
+Jenkins
+Git
+Maven
+Gradle
+Linux Commands
+Nginx
+AWS Basics
+ECS
+EC2
+S3
+IAM
+CloudWatch
+13. Interview Coding
+Arrays
+Strings
+HashMap
+HashSet
+LinkedList
+Stack
+Queue
+Trees
+Binary Search Tree
+Heap
+Graph
+Dynamic Programming
+Sliding Window
+Two Pointer
+Recursion
+Backtracking
+Binary Search
+Suggested preparation order (8–10 weeks)
+Core Java
+Collections & Multithreading
+Java 8+
+JVM Internals
+Spring Core
+Spring Boot
+Spring Data JPA/Hibernate
+Spring Security
+Spring Batch
+Microservices
+Kafka
+SQL & Database
+Design Patterns
+System Design
+Coding Practice
+
+This sequence mirrors how many senior Java interviews progress: they often begin with Java fundamentals, move into Spring and related technologies, then cover architecture, distributed systems, and coding. Since you've mentioned you feel you've forgotten much of the material, rebuilding the Java fundamentals first will make the Spring ecosystem much easier to revisit.
